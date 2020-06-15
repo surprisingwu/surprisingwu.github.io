@@ -157,9 +157,10 @@
 </li>
 </ul>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    sayName() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`My name is <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Super</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age) &#123;</span><br><span class="line">        <span class="keyword">super</span>(name)</span><br><span class="line">        <span class="keyword">this</span>.age = age</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Sub(</span><br><span class="line">instance.sayName()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-
-
+<h4 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h4><ul>
+<li><code>JavaScript</code>高级程序设计</li>
+<li>深入理解<code>ES6</code></li>
+</ul>
 
       
     </div>
@@ -274,7 +275,86 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="js-类型转换"><a href="#js-类型转换" class="headerlink" title="js 类型转换"></a>js 类型转换</h2><p>这里主要分为显示类型转换和隐式类型转换. 显示类型转换, 很简单. 主要是隐式类型转换,如果不清楚, 可能会造成代码逻辑未能达到预期结果.显式类型转换还是隐式类型转换,俩者之间的边界可能不一. </p>
+<h3 id="显式类型转换"><a href="#显式类型转换" class="headerlink" title="显式类型转换"></a>显式类型转换</h3><h4 id="转化为数字"><a href="#转化为数字" class="headerlink" title="转化为数字"></a>转化为数字</h4><ul>
+<li>其它类型转化为数字: 调用 <code>Number(type)</code><ul>
+<li>字符串转数字<ul>
+<li>字符串类型的数字,可以转为对应的<strong>数字</strong>. 空字符串转化为数字为<strong>0</strong></li>
+<li>字符串中含有非数字类型的. 转化为字符串为<code>NaN</code></li>
+</ul>
+</li>
+<li>布尔值转化为数字<ul>
+<li><code>true</code>: 转化为数字为<strong>1</strong></li>
+<li><code>false</code>: 转化为数字为<strong>0</strong></li>
+</ul>
+</li>
+<li><code>null</code>: 转化为数字为<strong>0</strong></li>
+<li><code>undefined</code>: 转化为数字为<strong>NaN</strong></li>
+<li><code>object</code>: <ul>
+<li>对象会先转成对应的基础类型. 在转化成字数字</li>
+</ul>
+</li>
+<li>解析数字字符串: 下面的俩个方法主要针对,数字类型的字符串, 传入其它数据类型, 会隐式的转化为字符串, 在解析. 因此, 在使用的时候, 避免传入其它的数据类型<ul>
+<li><code>parseInt</code>: 主要解析数字字符串的整数部分.</li>
+<li><code>parseFloat</code>: 可以解析带有小数的数字字符串</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="string">'122'</span>)  <span class="comment">// 122</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">''</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">'abc'</span>)  <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="literal">true</span>)  <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="literal">null</span>)  <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="literal">undefined</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>([<span class="number">23</span>]) <span class="comment">// 23</span></span><br><span class="line"><span class="built_in">Number</span>(&#123;&#125;) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>(&#123;</span><br><span class="line">    toString() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'45'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;) <span class="comment">// 45</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1234.34sdff'</span>, <span class="number">10</span>) <span class="comment">// 1234</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'af12323'</span>, <span class="number">10</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseInt</span>([], <span class="number">10</span>) <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<h4 id="转化为字符串"><a href="#转化为字符串" class="headerlink" title="转化为字符串"></a>转化为字符串</h4><ul>
+<li>显示的通过方法<code>String(type)</code>或其它方法把其它类型的数据转化为字符串</li>
+<li>基本类型转化为字符串比较简单</li>
+<li>对象转化为字符串, 会调用自身的或者原型上的<code>toString()</code>方法<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span>(&#123;&#125;)  <span class="comment">// '[object Object]'</span></span><br><span class="line">Strign(&#123;</span><br><span class="line">    toString() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">11</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;) <span class="comment">// '11'</span></span><br><span class="line"><span class="built_in">String</span>([]) <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
+<h4 id="转化为布尔值"><a href="#转化为布尔值" class="headerlink" title="转化为布尔值"></a>转化为布尔值</h4></li>
+<li>显示的通过<code>Boolean(type)</code>把其它类型转化为布尔值</li>
+<li>转化为<code>boolean</code>为假值的有<ul>
+<li><code>&#39;&#39;</code>: 空字符串</li>
+<li><code>+0,-0, 0, NaN</code></li>
+<li><code>null和undefine</code></li>
+<li><code>false</code></li>
+</ul>
+</li>
+<li>其它类型转化为<code>boolean</code>为真值</li>
+</ul>
+<h3 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h3><p>隐式类型转换, 发生的场景很多.比如对象和基本类型进行比较时,亦或者某些方法的参数. 这里举一个隐式转换的例子: <code>[]+{}和{}+[]</code></p>
+<h4 id="字符串和数字之间的隐式类型转换"><a href="#字符串和数字之间的隐式类型转换" class="headerlink" title="字符串和数字之间的隐式类型转换"></a>字符串和数字之间的隐式类型转换</h4><ul>
+<li>整体比较简单,尤其是在运算和字符串拼接的时候.比较多</li>
+<li>如<code>&#39;234&#39;+45</code>结果是23445, <code>45+&#39;23&#39;</code>结果为68</li>
+</ul>
+<h4 id="其它类型转化为布尔值"><a href="#其它类型转化为布尔值" class="headerlink" title="其它类型转化为布尔值"></a>其它类型转化为布尔值</h4><ul>
+<li><code>if(...)</code>语句中的条件判断表达式</li>
+<li><code>for(..;..;..)</code>语句中的条件判断表达式(第二个)</li>
+<li><code>while(..)和do..while(..)</code>循环中的条件判断表达式</li>
+<li><code>? :</code>中的条件判断表达式</li>
+<li>逻辑运算符 <strong>||</strong>和 <strong>&amp;&amp;</strong>左边的操作数(作为条件判断表达式)</li>
+<li>上面的使用场景,非布尔值会被隐式强制类型转换为布尔值<h4 id="宽松相等和严格相等"><a href="#宽松相等和严格相等" class="headerlink" title="宽松相等和严格相等"></a>宽松相等和严格相等</h4></li>
+<li><strong>===</strong> 严格相等, 会判断俩边的数据类型和大小, 比较简单</li>
+<li><strong>==</strong> 分为俩种情况<ul>
+<li>俩边的数据类型一致时, 和严格相等一样</li>
+<li>俩边的数据类型不一样时, 会发生隐式转换. <ul>
+<li>数字和字符串比较, 字符串会转成数字,再进行比较</li>
+<li>其它类型和布尔类型进行比较, 俩者会转成数字进行比较</li>
+<li><code>null 和 undefined</code>比较, 俩者相等</li>
+<li>对象和数字或者字符串比较, 对象会转成基础类型,再进行比较<ul>
+<li>对象<code>ToPrimitive</code>过程, 是通过调用自身的<code>toString 或者 valueOf</code>来实现的, 如果调用这俩个函数后, 还是不能返回基础类型, 就会抛出错误</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">NaN</span> == <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">-0</span> == +<span class="number">0</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">45</span> == <span class="string">'45'</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 其它类型和布尔值进行比较</span></span><br><span class="line"><span class="literal">false</span> == [] <span class="comment">// true</span></span><br><span class="line"><span class="literal">false</span> == &#123;&#125; <span class="comment">// false, &#123;&#125; 转化成数字为NaN</span></span><br><span class="line"><span class="literal">true</span> == &#123;&#125; <span class="comment">// false</span></span><br><span class="line"><span class="literal">false</span> == <span class="number">0</span> <span class="comment">// true</span></span><br><span class="line"><span class="literal">false</span> == <span class="string">'0'</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// null 和undefined 比较</span></span><br><span class="line"></span><br><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象和数字或者字符串比较</span></span><br><span class="line"></span><br><span class="line">&#123;&#125; == <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line">[] == <span class="number">0</span> <span class="comment">// true</span></span><br><span class="line">[<span class="number">12</span>] == <span class="string">'12'</span> <span class="comment">// true</span></span><br><span class="line">[<span class="number">12</span>, <span class="number">23</span>] == <span class="string">'1223'</span> <span class="comment">// false</span></span><br><span class="line">&#123;</span><br><span class="line">    toString() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; == <span class="number">1</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h4 id="一些函数的参数"><a href="#一些函数的参数" class="headerlink" title="一些函数的参数"></a>一些函数的参数</h4><p>一些函数的参数, 只接受指定类型的参数. 如<code>bind, apply, call</code>等接收的第一个参数是对象, 如果传入基本类型,则会转成对应的包装类型</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>, <span class="keyword">typeof</span> <span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn.bind(<span class="number">1</span>) ()  <span class="comment">// [Number, 1]  object</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">1</span>) <span class="comment">// [object Number]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(<span class="number">2</span>) <span class="comment">// [object Number]</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h4><ul>
+<li>你不知道的<code>javascript</code></li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
