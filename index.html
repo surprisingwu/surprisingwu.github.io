@@ -64,6 +64,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-浏览器渲染" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/" class="article-date">
+  <time datetime="2020-06-16T14:51:37.000Z" itemprop="datePublished">2020-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="浏览器渲染"><a href="#浏览器渲染" class="headerlink" title="浏览器渲染"></a>浏览器渲染</h2><ul>
+<li><a href="https://coolshell.cn/articles/9666.html" target="_blank" rel="noopener">浏览器渲染原理简介</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/" data-id="ckbjfrgtn000062l4122gf0om" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-js数字丢失精度" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/16/js%E6%95%B0%E5%AD%97%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6/" class="article-date">
@@ -312,8 +353,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="http-浅析"><a href="#http-浅析" class="headerlink" title="http 浅析"></a>http 浅析</h2><p>这里只对http的几个方面做一些了解, 底层不做深入. 主要分为下面的几个方面</p>
-<h3 id="http的一些概念"><a href="#http的一些概念" class="headerlink" title="http的一些概念"></a>http的一些概念</h3><p>http</p>
-<h3 id="cdn"><a href="#cdn" class="headerlink" title="cdn"></a>cdn</h3><h3 id="http和http2的区别"><a href="#http和http2的区别" class="headerlink" title="http和http2的区别"></a>http和http2的区别</h3><h3 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h3>
+<h3 id="http的一些概念"><a href="#http的一些概念" class="headerlink" title="http的一些概念"></a>http的一些概念</h3><p>超文本传输​​协议（<code>HTTP</code>）是一个用于传输超媒体文档（例如 <code>HTML</code>）的应用层协议。它是为 <code>Web</code> 浏览器与 <code>Web</code> 服务器之间的通信而设计的，但也可以用于其他目的。<code>HTTP</code> 遵循经典的客户端-服务端模型，客户端打开一个连接以发出请求，然后等待它收到服务器端响应。<code>HTTP</code> 是无状态协议，这意味着服务器不会在两个请求之间保留任何数据（状态）。该协议虽然通常基于 <code>TCP/IP</code> 层，但可以在任何可靠的传输层上使用；也就是说，不像 <code>UDP</code>，它是一个不会静默丢失消息的协议。一个完整的请求</p>
+<img  src="https://mdn.mozillademos.org/files/13677/Fetching_a_page.png"/>
+
+<h4 id="http概述"><a href="#http概述" class="headerlink" title="http概述"></a>http概述</h4><h4 id="http首部"><a href="#http首部" class="headerlink" title="http首部"></a>http首部</h4><h4 id="http请求的方法"><a href="#http请求的方法" class="headerlink" title="http请求的方法"></a>http请求的方法</h4><h4 id="http状态返回码"><a href="#http状态返回码" class="headerlink" title="http状态返回码"></a>http状态返回码</h4><h4 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h4><p>http缓存主要分为强缓存和协商缓存. 强缓存浏览器直接使用,缓存资源. 协商缓存,会向服务端发送请求,咨询缓存是否新鲜可用.</p>
+<p>大致流程图如下<br><img src="https://images2015.cnblogs.com/blog/408483/201605/408483-20160525182943272-204994049.png"/></p>
+<ul>
+<li><code>Cache-Control</code></li>
+<li><code>Expires</code></li>
+<li><code>ETag &amp;&amp; if-none-match</code></li>
+<li><code>if-modified-since &amp;&amp; last-modified</code><h4 id="http-cookie"><a href="#http-cookie" class="headerlink" title="http cookie"></a>http cookie</h4>http请求是无状态的, <h4 id="http-cors"><a href="#http-cors" class="headerlink" title="http cors"></a>http cors</h4>浏览器安全策略<h4 id="http-csp指令"><a href="#http-csp指令" class="headerlink" title="http csp指令"></a>http csp指令</h4><h3 id="cdn"><a href="#cdn" class="headerlink" title="cdn"></a>cdn</h3><h3 id="http和http2的区别"><a href="#http和http2的区别" class="headerlink" title="http和http2的区别"></a>http和http2的区别</h3><h3 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h3><h3 id="浏览器中输入一个url-回车后中间经历那些流程"><a href="#浏览器中输入一个url-回车后中间经历那些流程" class="headerlink" title="浏览器中输入一个url, 回车后中间经历那些流程?"></a>浏览器中输入一个url, 回车后中间经历那些流程?</h3></li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -506,7 +557,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%A5js/" rel="tag">深入js</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%A5js/" rel="tag">深入js</a></li></ul>
     </div>
   </div>
 
@@ -516,7 +567,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
+      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
     </div>
   </div>
 
@@ -538,6 +589,10 @@
       <ul>
         
           <li>
+            <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
+          </li>
+        
+          <li>
             <a href="/2020/06/16/js%E6%95%B0%E5%AD%97%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6/">js数字丢失精度</a>
           </li>
         
@@ -551,10 +606,6 @@
         
           <li>
             <a href="/2019/06/30/js%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%97%AD%E5%8C%85/">js作用域和闭包</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/15/http%E6%B5%85%E6%9E%90/">http浅析</a>
           </li>
         
       </ul>
