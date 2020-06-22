@@ -416,12 +416,9 @@
 </ul>
 </li>
 <li><code>Entity headers</code>: 包含有关实体主体的更多信息，比如主体长(<code>Content-Length</code>)度或其<code>MIME</code>类型。<ul>
-<li>实体报头<code>HTTP header</code>用来描述消息体内容。实体报头既可用于请求也可用于响应中。如<code>Content-Length，Content-Language，Content-Encoding</code>之类的报头都是实体报头</li>
+<li>实体报头<code>HTTP header</code>用来描述消息体内容。实体报头既可用于请求也可用于响应中。如<code>Content-Length，Content-Language，Content-Encoding</code>之类的报头都是实体报头<h4 id="http请求的方法"><a href="#http请求的方法" class="headerlink" title="http请求的方法"></a>http请求的方法</h4></li>
 </ul>
 </li>
-</ul>
-<p>\</p>
-<h4 id="http请求的方法"><a href="#http请求的方法" class="headerlink" title="http请求的方法"></a>http请求的方法</h4><ul>
 <li><code>GET</code><ul>
 <li><code>GET</code>方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据.</li>
 </ul>
@@ -574,14 +571,28 @@
 <li>前文提到的由 <code>XMLHttpRequest 或 Fetch</code>发起的跨域 <code>HTTP</code> 请求。</li>
 <li><code>Web</code> 字体 (<code>CSS</code> 中通过 <code>@font-face</code> 使用跨域字体资源), 因此，网站就可以发布 <code>TrueType</code> 字体资源，并只允许已授权网站进行跨站调用。</li>
 <li><code>WebGL</code> 贴图</li>
-<li>使用 <code>drawImage</code> 将 <code>Images/video</code> 画面绘制到 <code>canvas</code><h4 id="http-csp指令"><a href="#http-csp指令" class="headerlink" title="http csp指令"></a>http csp指令</h4>内容安全策略<h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h3></li>
-</ul>
-</li>
-<li><p><em>CDN*</em>的全称是<strong>Content Delivery Network</strong>, 即内容分发网络.其目的是使用户可就近取得所需内容，解决 <strong>Internet</strong>网络拥挤的状况，提高用户访问网站的响应速度。类似分布各地的物流仓储网络，<strong>CDN</strong>网络可以将源站的内容缓存到分布全球的<strong>CDN</strong>节点，根据用户的访问<strong>IP</strong>，就近连接<strong>CDN</strong>，提高网站响应速度。</p>
-<img src="https://yqfile.alicdn.com/c49f722ce22ba69422f9f44a2e8a67c318f1d5f4.png"/>
-
+<li>使用 <code>drawImage</code> 将 <code>Images/video</code> 画面绘制到 <code>canvas</code><h4 id="http-csp指令"><a href="#http-csp指令" class="headerlink" title="http csp指令"></a>http csp指令</h4><code>HTTP</code> 响应头<code>Content-Security-Policy</code>允许站点管理者控制用户代理能够为指定的页面加载哪些资源。除了少数例外情况，设置的政策主要涉及指定服务器的源和脚本结束点。这将帮助防止跨站脚本攻击<code>（Cross-Site Script）（XSS）</code>。<blockquote>
+<p>语法<code>Content-Security-Policy: &lt;policy-directive&gt;; &lt;policy-directive&gt;</code></p>
+</blockquote>
 </li>
 </ul>
+</li>
+<li><p><code>default-src</code>: 为其他取指令提供备用服务<code>fetch directives</code>。</p>
+</li>
+<li><p><code>font-src</code>: 设置允许通过<code>@font-face</code>加载的字体源地址。</p>
+</li>
+<li><p><code>frame-src</code>: 设置允许通过类似<code>&lt;frame&gt;和&lt;iframe&gt;</code>标签加载的内嵌内容的源地址。</p>
+</li>
+<li><p><code>img-src</code>: 限制图片和图标的源地址</p>
+</li>
+<li><p><code>manifest-src</code>:  限制应用声明文件的源地址。</p>
+</li>
+<li><p><code>media-src</code>: 限制通过<code>&lt;audio&gt;、&lt;video&gt;或&lt;track&gt;</code>标签加载的媒体文件的源地址。</p>
+</li>
+<li><p><code>base-uri</code>: 限制在<code>DOM中&lt;base&gt;</code>元素可以使用的URL。</p>
+</li>
+</ul>
+<h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h3><p><strong>CDN</strong>的全称是<strong>Content Delivery Network</strong>, 即内容分发网络.其目的是使用户可就近取得所需内容，解决 <strong>Internet</strong>网络拥挤的状况，提高用户访问网站的响应速度。类似分布各地的物流仓储网络，<strong>CDN</strong>网络可以将源站的内容缓存到分布全球的<strong>CDN</strong>节点，根据用户的访问<strong>IP</strong>，就近连接<strong>CDN</strong>，提高网站响应速度。<br><img src="https://yqfile.alicdn.com/c49f722ce22ba69422f9f44a2e8a67c318f1d5f4.png"/></p>
 <h4 id="为什么要使用CDN"><a href="#为什么要使用CDN" class="headerlink" title="为什么要使用CDN"></a>为什么要使用CDN</h4><p>从上面的流程中我们可以简单了解到源站访问的缺陷<br>需要通过情况复杂的路由链路，用户请求网页到网页最终呈现的时间太长。用户满意的网页打开时间是在2秒以下，用户能够忍受的极限等待时间是8秒，超过8秒大部分用户会选择离开网页。<br>连接质量受源站带宽限制，每增加一个用户，源站服务器就要扩充一份带宽才能满足需求，然而带宽的成本非常高<br>连接数量受服务器性能限制，所有请求都需要源站服务器处理<br>CDN通过分布式方案，通过空间换时间的方法，用冗余的空间换取时间，是典型的分布式实例。上述问题的核心就是用户和网站服务器的物理距离以及传输速度，CDN通过缓存机制简单粗暴地缩短用户和访问内容的距离，以达到加速访问的效果。</p>
 <h4 id="CDN原理"><a href="#CDN原理" class="headerlink" title="CDN原理"></a>CDN原理</h4><p>CDN原理很简单，实现也非常清晰，具体做法就是将网站的内容——比如图片、文字、视频——存在不同地理位置的服务器上，称为CDN节点。<br>举例来说，某网站的主机在北京市的机房内，如网站不使用CDN，那么广东的用户访问该网站的时延就是数据包从广东到北京来回的时间。如果该网站使用了CDN，并且这家CDN在广州架设了节点，那么广东的用户去访问被缓存的内容时只要等待数据包在广东内传输的时间即可，以此达到加速的效果。 </p>
 <ul>
