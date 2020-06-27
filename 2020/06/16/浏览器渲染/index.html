@@ -5,20 +5,29 @@
   
 
   
-  <title>浏览器渲染 | Hexo</title>
+  <title>浏览器渲染简介 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="浏览器渲染 浏览器渲染原理简介">
+  <meta name="description" content="浏览器渲染简介浏览器工作大流程废话少说，先来看个图：  从上面这个图中，我们可以看到那么几个事：  浏览器会解析三个东西： 一个是HTML&#x2F;SVG&#x2F;XHTML，事实上，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。 CSS，解析CSS会产生CSS规则树。 Javascript，脚本，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浏览器渲染">
+<meta property="og:title" content="浏览器渲染简介">
 <meta property="og:url" content="http://yoursite.com/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="浏览器渲染 浏览器渲染原理简介">
+<meta property="og:description" content="浏览器渲染简介浏览器工作大流程废话少说，先来看个图：  从上面这个图中，我们可以看到那么几个事：  浏览器会解析三个东西： 一个是HTML&#x2F;SVG&#x2F;XHTML，事实上，Webkit有三个C++的类对应这三类文档。解析这三种文件会产生一个DOM Tree。 CSS，解析CSS会产生CSS规则树。 Javascript，脚本，主要是通过DOM API和CSSOM API来操作DOM Tree和CSS">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-768x250.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-01-300x197.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-02-300x235.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-Example.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Rule-Tree-Example.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Content-Tree-Example.jpg">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/Firefox-style-context-tree.png">
+<meta property="og:image" content="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-Skipping-1024x282.jpg">
 <meta property="article:published_time" content="2020-06-16T14:51:37.000Z">
-<meta property="article:modified_time" content="2020-06-16T14:52:26.162Z">
+<meta property="article:modified_time" content="2020-06-27T14:29:11.225Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-768x250.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -81,7 +90,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      浏览器渲染
+      浏览器渲染简介
     </h1>
   
 
@@ -89,8 +98,133 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="浏览器渲染"><a href="#浏览器渲染" class="headerlink" title="浏览器渲染"></a>浏览器渲染</h2><ul>
-<li><a href="https://coolshell.cn/articles/9666.html" target="_blank" rel="noopener">浏览器渲染原理简介</a></li>
+        <h2 id="浏览器渲染简介"><a href="#浏览器渲染简介" class="headerlink" title="浏览器渲染简介"></a>浏览器渲染简介</h2><h4 id="浏览器工作大流程"><a href="#浏览器工作大流程" class="headerlink" title="浏览器工作大流程"></a>浏览器工作大流程</h4><p>废话少说，先来看个图：<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-768x250.jpg" alt="浏览器渲染大致流程图"></p>
+<ul>
+<li><p>从上面这个图中，我们可以看到那么几个事：</p>
+<ul>
+<li>浏览器会解析三个东西：<ul>
+<li>一个是<code>HTML/SVG/XHTML</code>，事实上，<code>Webkit</code>有三个C++的类对应这三类文档。解析这三种文件会产生一个<code>DOM Tree</code>。</li>
+<li><code>CSS</code>，解析<code>CSS</code>会产生<code>CSS</code>规则树。</li>
+<li><code>Javascript</code>，脚本，主要是通过<code>DOM API</code>和<code>CSSOM API</code>来操作<code>DOM Tree</code>和<code>CSS Rule Tree</code>.</li>
+</ul>
+</li>
+<li>解析完成后，浏览器引擎会通过<code>DOM Tree</code> 和 <code>CSS Rule Tree</code> 来构造 <code>Rendering Tree</code>。注意：<ul>
+<li><code>Rendering Tree</code> 渲染树并不等同于<code>DOM</code>树，因为一些像<code>Header</code>或<code>display:none</code>的东西就没必要放在渲染树中了。</li>
+<li><code>CSS</code> 的 <code>Rule Tree</code>主要是为了完成匹配并把<code>CSS Rule</code>附加上<code>Rendering Tree</code>上的每个<code>Element</code>。也就是<code>DOM</code>结点。也就是所谓的<code>Frame</code>。</li>
+<li>然后，计算每个<code>Frame</code>（也就是每个<code>Element</code>）的位置，这又叫<code>layout和reflow</code>过程。</li>
+</ul>
+</li>
+<li>最后通过调用操作系统<code>Native GUI</code>的<code>API</code>绘制。</li>
+</ul>
+</li>
+<li><p><code>DOM</code>解析<br><code>HTML的DOM Tree</code>解析如下：</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">title</span>&gt;</span>Web page parsing<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Web page parsing<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is an example Web page.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面这段HTML会解析成这样：<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-01-300x197.jpg" alt="DOM Tree"></li>
+<li>下面是另一个有SVG标签的情况。<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-02-300x235.jpg" alt="带有SVG DOM TREE"></li>
+<li><code>CSS</code>解析<ul>
+<li><code>CSS</code>的解析大概是下面这个样子（下面主要说的是<code>Gecko</code>也就是<code>Firefox</code>的玩法），假设我们有下面的<code>HTML</code>文档：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">doc</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">title</span>&gt;</span>A few quotes<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">para</span>&gt;</span></span><br><span class="line">   Franklin said that <span class="tag">&lt;<span class="name">quote</span>&gt;</span>"A penny saved is a penny earned."<span class="tag">&lt;/<span class="name">quote</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">para</span>&gt;</span></span><br><span class="line">   FDR said <span class="tag">&lt;<span class="name">quote</span>&gt;</span>"We have nothing to fear but <span class="tag">&lt;<span class="name">span</span>&gt;</span>fear itself.<span class="tag">&lt;/<span class="name">span</span>&gt;</span>"<span class="tag">&lt;/<span class="name">quote</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">doc</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code>* 于是`DOM Tree`是这个样子：</code></pre><p><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-Example.jpg" alt="对应的DOM TREE"><br>    * 然后我们的CSS文档是这样的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/* rule 1 */</span> <span class="selector-tag">doc</span> &#123; <span class="attribute">display</span>: block; <span class="attribute">text-indent</span>: <span class="number">1em</span>; &#125;</span><br><span class="line"><span class="comment">/* rule 2 */</span> <span class="selector-tag">title</span> &#123; <span class="attribute">display</span>: block; <span class="attribute">font-size</span>: <span class="number">3em</span>;   &#125;</span><br><span class="line"><span class="comment">/* rule 3 */</span> <span class="selector-tag">para</span> &#123; <span class="attribute">display</span>: block; &#125;</span><br><span class="line"><span class="comment">/* rule 4 */</span> <span class="selector-attr">[class=<span class="string">"emph"</span>]</span> &#123; <span class="attribute">font-style</span>: italic; &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>* 于是我们的`CSS Rule Tree`会是这个样子：</code></pre><p><img src="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Rule-Tree-Example.jpg" alt="对应的 CSS RULE TREE"></p>
+<ul>
+<li>注意，图中的第4条规则出现了两次，一次是独立的，一次是在规则3的子结点。所以，我们可以知道，建立<code>CSS Rule Tree</code>是需要比照着<code>DOM Tree</code>来的。<code>CSS</code>匹配<code>DOM Tree</code>主要是从右到左解析<code>CSS</code>的<code>Selector</code>，好多人以为这个事会比较快，其实并不一定。关键还看我们的<code>CSS</code>的<code>Selector</code>怎么写了。<ul>
+<li>注意：<code>CSS</code>匹配<code>HTML</code>元素是一个相当复杂和有性能问题的事情。所以，你就会在<code>N</code>多地方看到很多人都告诉你，<code>DOM</code>树要小，<code>CSS</code>尽量用<code>id</code>和<code>class</code>，千万不要过渡层叠下去，……<br>通过这两个树，我们可以得到一个叫<code>Style Context Tree</code>，也就是下面这样（把<code>CSS Rule</code>结点<code>Attach</code>到<code>DOM Tree</code>上）：</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Content-Tree-Example.jpg" alt="Style Context Tree"></p>
+<p>  所以，<code>Firefox</code>基本上来说是通过<code>CSS</code> 解析 生成 <code>CSS Rule Tree</code>，然后，通过比对<code>DOM</code>生成<code>Style Context Tree</code>，然后<code>Firefox</code>通过把<code>Style Context Tree</code>和其<code>Render Tree（Frame Tree）</code>关联上，就完成了。注意：<code>Render Tree</code>会把一些不可见的结点去除掉。<strong>而<code>Firefox</code>中所谓的<code>Frame</code>就是一个<code>DOM</code>节点，不要被其名字所迷惑了</strong>。</p>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/Firefox-style-context-tree.png" alt="Style Contexts"><br>注：<code>Webkit</code>不像<code>Firefox</code>要用两个树来干这个，<code>Webkit</code>也有<code>Style</code>对象，它直接把这个<code>Style</code>对象存在了相应的<code>DOM</code>节点上了。</p>
+<h4 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h4><ul>
+<li>渲染的流程基本上如下（黄色的四个步骤）：<ul>
+<li>计算<code>CSS</code>样式</li>
+<li>构建<code>Render Tree</code></li>
+<li><code>Layout</code> – 定位坐标和大小，是否换行，各种<code>position</code>, <code>overflow, z-index</code>属性 ……</li>
+<li>正式开画</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-Skipping-1024x282.jpg" alt="大致的渲染流程"><br>注意：上图流程中有很多连接线，这表示了<code>Javascript</code>动态修改了<code>DOM</code>属性或是<code>CSS</code>属会导致重新<code>Layout</code>，有些改变不会，就是那些指到天上的箭头，比如，修改后的<code>CSS rule</code>没有被匹配到，等。<br>这里重要要说两个概念，一个是<code>Reflow</code>，另一个是<code>Repaint</code>。这两个不是一回事。</p>
+<ul>
+<li><p><code>Repaint</code>——重绘.屏幕的一部分要重画，比如某个<code>CSS</code>的背景色变了。但是元素的几何尺寸没有变。</p>
+</li>
+<li><p><code>Reflow</code>——回流.意味着元件的几何尺寸变了，我们需要重新验证并计算<code>Render Tree</code>。是<code>Render Tree</code>的一部分或全部发生了变化。这就是<code>Reflow</code>，或是<code>Layout</code>。（<code>HTML</code>使用的是<code>flow based layout</code>，也就是流式布局，所以，如果某元件的几何尺寸发生了变化，需要重新布局，也就叫<code>reflow</code>）<code>reflow</code> 会从<code>&lt;html&gt;</code>这个<code>root frame</code>开始递归往下，依次计算所有的结点几何尺寸和位置，在<code>reflow</code>过程中，可能会增加一些<code>frame</code>，比如一个文本字符串必需被包装起来。</p>
+</li>
+<li><p><code>Reflow</code>的成本比<code>Repaint</code>的成本高得多的多。<code>DOM Tree</code>里的每个节点都会有<code>reflow</code>方法，一个节点的<code>reflow</code>很有可能导致子结点，甚至父点以及同级结点的<code>reflow</code>。在一些高性能的电脑上也许还没什么，但是如果<code>reflow</code>发生在手机上，那么这个过程是非常痛苦和耗电的。<br>所以，下面这些动作有很大可能会是成本比较高的。</p>
+<ul>
+<li>当你增加、删除、修改<code>DOM</code>结点时，会导致<code>Reflow</code>或<code>Repaint</code></li>
+<li>当你移动<code>DOM</code>的位置，或是搞个动画的时候。</li>
+<li>当你修改<code>CSS</code>样式的时候。</li>
+<li>当你<code>Resize</code>窗口的时候（移动端没有这个问题），或是滚动的时候。</li>
+<li>当你修改网页的默认字体时。</li>
+<li>注: <code>display:none</code>会触发<code>reflow</code>，而<code>visibility:hidden</code>只会触发<code>repaint</code>，因为没有发现位置变化。</li>
+</ul>
+</li>
+<li><p>多说两句关于滚屏的事，通常来说，如果在滚屏的时候，我们的页面上的所有的像素都会跟着滚动，那么性能上没什么问题，因为我们的显卡对于这种把全屏像素往上往下移的算法是很快。但是如果你有一个<code>fixed</code>的背景图，或是有些Element不跟着滚动，有些<code>Elment</code>是动画，那么这个滚动的动作对于浏览器来说会是相当相当痛苦的一个过程。你可以看到很多这样的网页在滚动的时候性能有多差。因为滚屏也有可能会造成<code>reflow</code>。</p>
+<ul>
+<li>基本上来说，<code>reflow</code>有如下的几个原因：<ul>
+<li><code>Initial</code>。网页初始化的时候。</li>
+<li><code>Incremental</code>。一些<code>Javascript</code>在操作<code>DOM Tree</code>时。</li>
+<li><code>Resize</code>。其些元件的尺寸变了。</li>
+<li><code>StyleChange</code>。如果<code>CSS</code>的属性发生变化了。</li>
+<li><code>Dirty</code>。几个<code>Incremental</code>的<code>reflow</code>发生在同一个<code>frame</code>的子树上。<br>好了，我们来看一个示例吧：</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bstyle = <span class="built_in">document</span>.body.style; <span class="comment">// cache</span></span><br><span class="line"> </span><br><span class="line">bstyle.padding = <span class="string">"20px"</span>; <span class="comment">// reflow, repaint</span></span><br><span class="line">bstyle.border = <span class="string">"10px solid red"</span>; <span class="comment">//  再一次的 reflow 和 repaint</span></span><br><span class="line"> </span><br><span class="line">bstyle.color = <span class="string">"blue"</span>; <span class="comment">// repaint</span></span><br><span class="line">bstyle.backgroundColor = <span class="string">"#fad"</span>; <span class="comment">// repaint</span></span><br><span class="line"> </span><br><span class="line">bstyle.fontSize = <span class="string">"2em"</span>; <span class="comment">// reflow, repaint</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// new DOM element - reflow, repaint</span></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(<span class="built_in">document</span>.createTextNode(<span class="string">'dude!'</span>));</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">当然，我们的浏览器是聪明的，它不会像上面那样，你每改一次样式，它就`</span>reflow<span class="string">`或`</span>repaint<span class="string">`一次。一般来说，浏览器会把这样的操作积攒一批，然后做一次`</span>reflow<span class="string">`，这又叫异步`</span>reflow<span class="string">`或增量异步`</span>reflow<span class="string">`。但是有些情况浏览器是不会这么做的，比如：`</span>resize<span class="string">`窗口，改变了页面默认的字体，等。对于这些操作，浏览器会马上进行`</span>reflow<span class="string">`。</span></span><br><span class="line"><span class="string">但是有些时候，我们的脚本会阻止浏览器这么干，比如：如果我们请求下面的一些DOM值：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="number">1.</span> offsetTop, offsetLeft, offsetWidth, offsetHeight</span><br><span class="line"><span class="number">2.</span> scrollTop/Left/Width/Height</span><br><span class="line"><span class="number">3.</span> clientTop/Left/Width/Height</span><br><span class="line"><span class="number">4.</span> IE中的 getComputedStyle(), 或 currentStyle</span><br></pre></td></tr></table></figure>
+<p>因为，如果我们的程序需要这些值，那么浏览器需要返回最新的值，而这样一样会<code>flush</code>出去一些样式的改变，从而造成频繁的<code>reflow/repaint</code>。</p>
+<ul>
+<li>减少<code>reflow/repaint</code>: 下面是一些<code>Best Practices</code><ul>
+<li>不要一条一条地修改<code>DOM</code>的样式。与其这样，还不如预先定义好<code>css</code>的<code>class</code>，然后修改<code>DOM</code>的<code>className</code>。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js"><span class="comment">// bad</span>
+<span class="keyword">var</span> left = <span class="number">10</span>,
+top = <span class="number">10</span>;
+el.style.left = left + <span class="string">"px"</span>;
+el.style.top  = top  + <span class="string">"px"</span>;
+
+<span class="comment">// Good</span>
+el.className += <span class="string">" theclassname"</span>;
+
+<span class="comment">// Good</span>
+el.style.cssText += <span class="string">"; left: "</span> + left + <span class="string">"px; top: "</span> + top + <span class="string">"px;"</span>;
+</code></pre>
+<ul>
+<li>把<code>DOM</code>离线后修改。如：<ul>
+<li>使用<code>documentFragment</code> 对象在内存里操作<code>DOM</code></li>
+<li>先把<code>DOM</code>给<code>display:none(有一次reflow)</code>，然后你想怎么改就怎么改。比如修改100次，然后再把他显示出来。</li>
+<li><code>clone一个DOM</code>结点到内存里，然后想怎么改就怎么改，改完后，和在线的那个的交换一下。</li>
+</ul>
+</li>
+<li>不要把<code>DOM</code>结点的属性值放在一个循环里当成循环里的变量。不然这会导致大量地读写这个结点的属性。</li>
+<li>尽可能的修改层级比较低的<code>DOM</code>。当然，改变层级比较底的<code>DOM</code>有可能会造成大面积的<code>reflow</code>，但是也可能影响范围很小。</li>
+<li>为动画的<code>HTML</code>元件使用<code>fixed</code>或<code>absoult</code>的<code>position</code>，那么修改他们的<code>CSS</code>是不会<code>reflow</code>的。</li>
+<li>千万不要使用<code>table</code>布局。因为可能很小的一个小改动会造成整个<code>table</code>的重新布局。</li>
+</ul>
+<p><code>In this manner, the user agent can begin to lay out the table once the entire first row has been received. Cells in subsequent rows do not affect column widths. Any cell that has content that overflows uses the ‘overflow’ property to determine whether to clip the overflow content.
+Fixed layout, CSS 2.1 Specification
+This algorithm may be inefficient since it requires the user agent to have access to all the content in the table before determining the final layout and may demand more than one pass.
+Automatic layout, CSS 2.1 Specification</code><br>几个工具和几篇文章<br>有时候，你会也许会发现在<code>IE</code>下，你不知道你修改了什么东西，结果CPU一下子就上去了到100%，然后过了好几秒钟<code>repaint/reflow</code>才完成，这种事情以IE的年代时经常发生。所以，我们需要一些工具帮我们看看我们的代码里有没有什么不合适的东西。</p>
+<ul>
+<li><code>Chrome</code>下，<code>Google</code>的<code>SpeedTracer</code>是个非常强悍的工作让你看看你的浏览渲染的成本有多大。其实<code>Safari和Chrome</code>都可以使用开发者工具里的一个<code>Timeline</code>的东东。</li>
+<li><code>Firefox</code>下这个基于<code>Firebug</code>的叫<code>Firebug Paint Events</code>的插件也不错。<br><code>* IE下你可以用一个叫</code>dynaTrace<code>的</code>IE`扩展。<br>最后，别忘了下面这几篇提高浏览器性能的文章：<ul>
+<li><a href="http://code.google.com/speed/page-speed/docs/rules_intro.html" target="_blank" rel="noopener">Google – Web Performance Best Practices</a></li>
+<li><a href="https://developer.yahoo.com/performance/rules.html" target="_blank" rel="noopener">Yahoo – Best Practices for Speeding Up Your Web Site</a></li>
+<li><a href="http://www.stevesouders.com/examples/rules.php" target="_blank" rel="noopener">Steve Souders – 14 Rules for Faster-Loading Web Sites</a></li>
+</ul>
+</li>
 </ul>
 
       
@@ -148,7 +282,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
+      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 15px;">浏览器</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
     </div>
   </div>
 
@@ -174,7 +308,7 @@
           </li>
         
           <li>
-            <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
+            <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染简介</a>
           </li>
         
           <li>

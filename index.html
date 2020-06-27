@@ -103,6 +103,8 @@
       <a data-url="http://yoursite.com/2020/06/19/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E8%BE%93%E5%85%A5%E4%B8%80%E4%B8%AAurl%E5%88%B0%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90/" data-id="ckbqooxmm0000k3qy7kmbg749" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+
     </footer>
   </div>
   
@@ -124,7 +126,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
+      <a class="article-title" href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染简介</a>
     </h1>
   
 
@@ -132,8 +134,133 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="浏览器渲染"><a href="#浏览器渲染" class="headerlink" title="浏览器渲染"></a>浏览器渲染</h2><ul>
-<li><a href="https://coolshell.cn/articles/9666.html" target="_blank" rel="noopener">浏览器渲染原理简介</a></li>
+        <h2 id="浏览器渲染简介"><a href="#浏览器渲染简介" class="headerlink" title="浏览器渲染简介"></a>浏览器渲染简介</h2><h4 id="浏览器工作大流程"><a href="#浏览器工作大流程" class="headerlink" title="浏览器工作大流程"></a>浏览器工作大流程</h4><p>废话少说，先来看个图：<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-768x250.jpg" alt="浏览器渲染大致流程图"></p>
+<ul>
+<li><p>从上面这个图中，我们可以看到那么几个事：</p>
+<ul>
+<li>浏览器会解析三个东西：<ul>
+<li>一个是<code>HTML/SVG/XHTML</code>，事实上，<code>Webkit</code>有三个C++的类对应这三类文档。解析这三种文件会产生一个<code>DOM Tree</code>。</li>
+<li><code>CSS</code>，解析<code>CSS</code>会产生<code>CSS</code>规则树。</li>
+<li><code>Javascript</code>，脚本，主要是通过<code>DOM API</code>和<code>CSSOM API</code>来操作<code>DOM Tree</code>和<code>CSS Rule Tree</code>.</li>
+</ul>
+</li>
+<li>解析完成后，浏览器引擎会通过<code>DOM Tree</code> 和 <code>CSS Rule Tree</code> 来构造 <code>Rendering Tree</code>。注意：<ul>
+<li><code>Rendering Tree</code> 渲染树并不等同于<code>DOM</code>树，因为一些像<code>Header</code>或<code>display:none</code>的东西就没必要放在渲染树中了。</li>
+<li><code>CSS</code> 的 <code>Rule Tree</code>主要是为了完成匹配并把<code>CSS Rule</code>附加上<code>Rendering Tree</code>上的每个<code>Element</code>。也就是<code>DOM</code>结点。也就是所谓的<code>Frame</code>。</li>
+<li>然后，计算每个<code>Frame</code>（也就是每个<code>Element</code>）的位置，这又叫<code>layout和reflow</code>过程。</li>
+</ul>
+</li>
+<li>最后通过调用操作系统<code>Native GUI</code>的<code>API</code>绘制。</li>
+</ul>
+</li>
+<li><p><code>DOM</code>解析<br><code>HTML的DOM Tree</code>解析如下：</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">title</span>&gt;</span>Web page parsing<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Web page parsing<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is an example Web page.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面这段HTML会解析成这样：<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-01-300x197.jpg" alt="DOM Tree"></li>
+<li>下面是另一个有SVG标签的情况。<br><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-02-300x235.jpg" alt="带有SVG DOM TREE"></li>
+<li><code>CSS</code>解析<ul>
+<li><code>CSS</code>的解析大概是下面这个样子（下面主要说的是<code>Gecko</code>也就是<code>Firefox</code>的玩法），假设我们有下面的<code>HTML</code>文档：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">doc</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">title</span>&gt;</span>A few quotes<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">para</span>&gt;</span></span><br><span class="line">   Franklin said that <span class="tag">&lt;<span class="name">quote</span>&gt;</span>"A penny saved is a penny earned."<span class="tag">&lt;/<span class="name">quote</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">para</span>&gt;</span></span><br><span class="line">   FDR said <span class="tag">&lt;<span class="name">quote</span>&gt;</span>"We have nothing to fear but <span class="tag">&lt;<span class="name">span</span>&gt;</span>fear itself.<span class="tag">&lt;/<span class="name">span</span>&gt;</span>"<span class="tag">&lt;/<span class="name">quote</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">doc</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code>* 于是`DOM Tree`是这个样子：</code></pre><p><img src="https://coolshell.cn/wp-content/uploads/2013/05/DOM-Tree-Example.jpg" alt="对应的DOM TREE"><br>    * 然后我们的CSS文档是这样的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/* rule 1 */</span> <span class="selector-tag">doc</span> &#123; <span class="attribute">display</span>: block; <span class="attribute">text-indent</span>: <span class="number">1em</span>; &#125;</span><br><span class="line"><span class="comment">/* rule 2 */</span> <span class="selector-tag">title</span> &#123; <span class="attribute">display</span>: block; <span class="attribute">font-size</span>: <span class="number">3em</span>;   &#125;</span><br><span class="line"><span class="comment">/* rule 3 */</span> <span class="selector-tag">para</span> &#123; <span class="attribute">display</span>: block; &#125;</span><br><span class="line"><span class="comment">/* rule 4 */</span> <span class="selector-attr">[class=<span class="string">"emph"</span>]</span> &#123; <span class="attribute">font-style</span>: italic; &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>* 于是我们的`CSS Rule Tree`会是这个样子：</code></pre><p><img src="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Rule-Tree-Example.jpg" alt="对应的 CSS RULE TREE"></p>
+<ul>
+<li>注意，图中的第4条规则出现了两次，一次是独立的，一次是在规则3的子结点。所以，我们可以知道，建立<code>CSS Rule Tree</code>是需要比照着<code>DOM Tree</code>来的。<code>CSS</code>匹配<code>DOM Tree</code>主要是从右到左解析<code>CSS</code>的<code>Selector</code>，好多人以为这个事会比较快，其实并不一定。关键还看我们的<code>CSS</code>的<code>Selector</code>怎么写了。<ul>
+<li>注意：<code>CSS</code>匹配<code>HTML</code>元素是一个相当复杂和有性能问题的事情。所以，你就会在<code>N</code>多地方看到很多人都告诉你，<code>DOM</code>树要小，<code>CSS</code>尽量用<code>id</code>和<code>class</code>，千万不要过渡层叠下去，……<br>通过这两个树，我们可以得到一个叫<code>Style Context Tree</code>，也就是下面这样（把<code>CSS Rule</code>结点<code>Attach</code>到<code>DOM Tree</code>上）：</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/CSS-Content-Tree-Example.jpg" alt="Style Context Tree"></p>
+<p>  所以，<code>Firefox</code>基本上来说是通过<code>CSS</code> 解析 生成 <code>CSS Rule Tree</code>，然后，通过比对<code>DOM</code>生成<code>Style Context Tree</code>，然后<code>Firefox</code>通过把<code>Style Context Tree</code>和其<code>Render Tree（Frame Tree）</code>关联上，就完成了。注意：<code>Render Tree</code>会把一些不可见的结点去除掉。<strong>而<code>Firefox</code>中所谓的<code>Frame</code>就是一个<code>DOM</code>节点，不要被其名字所迷惑了</strong>。</p>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/Firefox-style-context-tree.png" alt="Style Contexts"><br>注：<code>Webkit</code>不像<code>Firefox</code>要用两个树来干这个，<code>Webkit</code>也有<code>Style</code>对象，它直接把这个<code>Style</code>对象存在了相应的<code>DOM</code>节点上了。</p>
+<h4 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h4><ul>
+<li>渲染的流程基本上如下（黄色的四个步骤）：<ul>
+<li>计算<code>CSS</code>样式</li>
+<li>构建<code>Render Tree</code></li>
+<li><code>Layout</code> – 定位坐标和大小，是否换行，各种<code>position</code>, <code>overflow, z-index</code>属性 ……</li>
+<li>正式开画</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://coolshell.cn/wp-content/uploads/2013/05/Render-Process-Skipping-1024x282.jpg" alt="大致的渲染流程"><br>注意：上图流程中有很多连接线，这表示了<code>Javascript</code>动态修改了<code>DOM</code>属性或是<code>CSS</code>属会导致重新<code>Layout</code>，有些改变不会，就是那些指到天上的箭头，比如，修改后的<code>CSS rule</code>没有被匹配到，等。<br>这里重要要说两个概念，一个是<code>Reflow</code>，另一个是<code>Repaint</code>。这两个不是一回事。</p>
+<ul>
+<li><p><code>Repaint</code>——重绘.屏幕的一部分要重画，比如某个<code>CSS</code>的背景色变了。但是元素的几何尺寸没有变。</p>
+</li>
+<li><p><code>Reflow</code>——回流.意味着元件的几何尺寸变了，我们需要重新验证并计算<code>Render Tree</code>。是<code>Render Tree</code>的一部分或全部发生了变化。这就是<code>Reflow</code>，或是<code>Layout</code>。（<code>HTML</code>使用的是<code>flow based layout</code>，也就是流式布局，所以，如果某元件的几何尺寸发生了变化，需要重新布局，也就叫<code>reflow</code>）<code>reflow</code> 会从<code>&lt;html&gt;</code>这个<code>root frame</code>开始递归往下，依次计算所有的结点几何尺寸和位置，在<code>reflow</code>过程中，可能会增加一些<code>frame</code>，比如一个文本字符串必需被包装起来。</p>
+</li>
+<li><p><code>Reflow</code>的成本比<code>Repaint</code>的成本高得多的多。<code>DOM Tree</code>里的每个节点都会有<code>reflow</code>方法，一个节点的<code>reflow</code>很有可能导致子结点，甚至父点以及同级结点的<code>reflow</code>。在一些高性能的电脑上也许还没什么，但是如果<code>reflow</code>发生在手机上，那么这个过程是非常痛苦和耗电的。<br>所以，下面这些动作有很大可能会是成本比较高的。</p>
+<ul>
+<li>当你增加、删除、修改<code>DOM</code>结点时，会导致<code>Reflow</code>或<code>Repaint</code></li>
+<li>当你移动<code>DOM</code>的位置，或是搞个动画的时候。</li>
+<li>当你修改<code>CSS</code>样式的时候。</li>
+<li>当你<code>Resize</code>窗口的时候（移动端没有这个问题），或是滚动的时候。</li>
+<li>当你修改网页的默认字体时。</li>
+<li>注: <code>display:none</code>会触发<code>reflow</code>，而<code>visibility:hidden</code>只会触发<code>repaint</code>，因为没有发现位置变化。</li>
+</ul>
+</li>
+<li><p>多说两句关于滚屏的事，通常来说，如果在滚屏的时候，我们的页面上的所有的像素都会跟着滚动，那么性能上没什么问题，因为我们的显卡对于这种把全屏像素往上往下移的算法是很快。但是如果你有一个<code>fixed</code>的背景图，或是有些Element不跟着滚动，有些<code>Elment</code>是动画，那么这个滚动的动作对于浏览器来说会是相当相当痛苦的一个过程。你可以看到很多这样的网页在滚动的时候性能有多差。因为滚屏也有可能会造成<code>reflow</code>。</p>
+<ul>
+<li>基本上来说，<code>reflow</code>有如下的几个原因：<ul>
+<li><code>Initial</code>。网页初始化的时候。</li>
+<li><code>Incremental</code>。一些<code>Javascript</code>在操作<code>DOM Tree</code>时。</li>
+<li><code>Resize</code>。其些元件的尺寸变了。</li>
+<li><code>StyleChange</code>。如果<code>CSS</code>的属性发生变化了。</li>
+<li><code>Dirty</code>。几个<code>Incremental</code>的<code>reflow</code>发生在同一个<code>frame</code>的子树上。<br>好了，我们来看一个示例吧：</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bstyle = <span class="built_in">document</span>.body.style; <span class="comment">// cache</span></span><br><span class="line"> </span><br><span class="line">bstyle.padding = <span class="string">"20px"</span>; <span class="comment">// reflow, repaint</span></span><br><span class="line">bstyle.border = <span class="string">"10px solid red"</span>; <span class="comment">//  再一次的 reflow 和 repaint</span></span><br><span class="line"> </span><br><span class="line">bstyle.color = <span class="string">"blue"</span>; <span class="comment">// repaint</span></span><br><span class="line">bstyle.backgroundColor = <span class="string">"#fad"</span>; <span class="comment">// repaint</span></span><br><span class="line"> </span><br><span class="line">bstyle.fontSize = <span class="string">"2em"</span>; <span class="comment">// reflow, repaint</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// new DOM element - reflow, repaint</span></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(<span class="built_in">document</span>.createTextNode(<span class="string">'dude!'</span>));</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">当然，我们的浏览器是聪明的，它不会像上面那样，你每改一次样式，它就`</span>reflow<span class="string">`或`</span>repaint<span class="string">`一次。一般来说，浏览器会把这样的操作积攒一批，然后做一次`</span>reflow<span class="string">`，这又叫异步`</span>reflow<span class="string">`或增量异步`</span>reflow<span class="string">`。但是有些情况浏览器是不会这么做的，比如：`</span>resize<span class="string">`窗口，改变了页面默认的字体，等。对于这些操作，浏览器会马上进行`</span>reflow<span class="string">`。</span></span><br><span class="line"><span class="string">但是有些时候，我们的脚本会阻止浏览器这么干，比如：如果我们请求下面的一些DOM值：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="number">1.</span> offsetTop, offsetLeft, offsetWidth, offsetHeight</span><br><span class="line"><span class="number">2.</span> scrollTop/Left/Width/Height</span><br><span class="line"><span class="number">3.</span> clientTop/Left/Width/Height</span><br><span class="line"><span class="number">4.</span> IE中的 getComputedStyle(), 或 currentStyle</span><br></pre></td></tr></table></figure>
+<p>因为，如果我们的程序需要这些值，那么浏览器需要返回最新的值，而这样一样会<code>flush</code>出去一些样式的改变，从而造成频繁的<code>reflow/repaint</code>。</p>
+<ul>
+<li>减少<code>reflow/repaint</code>: 下面是一些<code>Best Practices</code><ul>
+<li>不要一条一条地修改<code>DOM</code>的样式。与其这样，还不如预先定义好<code>css</code>的<code>class</code>，然后修改<code>DOM</code>的<code>className</code>。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js"><span class="comment">// bad</span>
+<span class="keyword">var</span> left = <span class="number">10</span>,
+top = <span class="number">10</span>;
+el.style.left = left + <span class="string">"px"</span>;
+el.style.top  = top  + <span class="string">"px"</span>;
+
+<span class="comment">// Good</span>
+el.className += <span class="string">" theclassname"</span>;
+
+<span class="comment">// Good</span>
+el.style.cssText += <span class="string">"; left: "</span> + left + <span class="string">"px; top: "</span> + top + <span class="string">"px;"</span>;
+</code></pre>
+<ul>
+<li>把<code>DOM</code>离线后修改。如：<ul>
+<li>使用<code>documentFragment</code> 对象在内存里操作<code>DOM</code></li>
+<li>先把<code>DOM</code>给<code>display:none(有一次reflow)</code>，然后你想怎么改就怎么改。比如修改100次，然后再把他显示出来。</li>
+<li><code>clone一个DOM</code>结点到内存里，然后想怎么改就怎么改，改完后，和在线的那个的交换一下。</li>
+</ul>
+</li>
+<li>不要把<code>DOM</code>结点的属性值放在一个循环里当成循环里的变量。不然这会导致大量地读写这个结点的属性。</li>
+<li>尽可能的修改层级比较低的<code>DOM</code>。当然，改变层级比较底的<code>DOM</code>有可能会造成大面积的<code>reflow</code>，但是也可能影响范围很小。</li>
+<li>为动画的<code>HTML</code>元件使用<code>fixed</code>或<code>absoult</code>的<code>position</code>，那么修改他们的<code>CSS</code>是不会<code>reflow</code>的。</li>
+<li>千万不要使用<code>table</code>布局。因为可能很小的一个小改动会造成整个<code>table</code>的重新布局。</li>
+</ul>
+<p><code>In this manner, the user agent can begin to lay out the table once the entire first row has been received. Cells in subsequent rows do not affect column widths. Any cell that has content that overflows uses the ‘overflow’ property to determine whether to clip the overflow content.
+Fixed layout, CSS 2.1 Specification
+This algorithm may be inefficient since it requires the user agent to have access to all the content in the table before determining the final layout and may demand more than one pass.
+Automatic layout, CSS 2.1 Specification</code><br>几个工具和几篇文章<br>有时候，你会也许会发现在<code>IE</code>下，你不知道你修改了什么东西，结果CPU一下子就上去了到100%，然后过了好几秒钟<code>repaint/reflow</code>才完成，这种事情以IE的年代时经常发生。所以，我们需要一些工具帮我们看看我们的代码里有没有什么不合适的东西。</p>
+<ul>
+<li><code>Chrome</code>下，<code>Google</code>的<code>SpeedTracer</code>是个非常强悍的工作让你看看你的浏览渲染的成本有多大。其实<code>Safari和Chrome</code>都可以使用开发者工具里的一个<code>Timeline</code>的东东。</li>
+<li><code>Firefox</code>下这个基于<code>Firebug</code>的叫<code>Firebug Paint Events</code>的插件也不错。<br><code>* IE下你可以用一个叫</code>dynaTrace<code>的</code>IE`扩展。<br>最后，别忘了下面这几篇提高浏览器性能的文章：<ul>
+<li><a href="http://code.google.com/speed/page-speed/docs/rules_intro.html" target="_blank" rel="noopener">Google – Web Performance Best Practices</a></li>
+<li><a href="https://developer.yahoo.com/performance/rules.html" target="_blank" rel="noopener">Yahoo – Best Practices for Speeding Up Your Web Site</a></li>
+<li><a href="http://www.stevesouders.com/examples/rules.php" target="_blank" rel="noopener">Steve Souders – 14 Rules for Faster-Loading Web Sites</a></li>
+</ul>
+</li>
 </ul>
 
       
@@ -173,13 +300,85 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="JavaScript数字精度丢失问题总结"><a href="#JavaScript数字精度丢失问题总结" class="headerlink" title="JavaScript数字精度丢失问题总结"></a>JavaScript数字精度丢失问题总结</h2><p>本文分为三个部分</p>
+<ol>
+<li>JS 数字精度丢失的一些典型问题</li>
+<li>JS 数字精度丢失的原因</li>
+<li>解决方案（一个对象+一个函数）</li>
+</ol>
+<h4 id="JS数字精度丢失的一些典型问题"><a href="#JS数字精度丢失的一些典型问题" class="headerlink" title="JS数字精度丢失的一些典型问题"></a>JS数字精度丢失的一些典型问题</h4><ul>
+<li>两个简单的浮点数相加</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span> + <span class="number">0.2</span> != <span class="number">0.3</span> <span class="comment">// true`</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>Chrome</code>控制台模拟对应的小数运算.<br><img src="https://res.hualala.com/basicdoc/442e7b3f-8430-4604-ba8f-b04e68cbd078.png" alt="小数相加丢失精度"></p>
+</li>
+<li><p>看看<code>Java</code>的运算结果<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170748524-1081159205.png" alt="java 进行浮点数运算时,也是如此"></p>
+</li>
+<li><p>再看看Python<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170830461-1451288842.png" alt="主要是机制的问题"></p>
+</li>
+</ul>
+<ul>
+<li>大整数运算</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">9999999999999999</span> == <span class="number">10000000000000001</span> <span class="comment">// ？</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Chrome</code>控制台输出对应的结果</li>
+</ul>
+<p><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170956227-1489805455.png" alt="大数超出js表示的最大值时,也会丢失精度"></p>
+<ul>
+<li><p>16位和17位数竟然相等，没天理啊。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">9007199254740992</span></span><br><span class="line">x + <span class="number">1</span> == x <span class="comment">// ？</span></span><br></pre></td></tr></table></figure>
+<p>看结果<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151107173235774-1370728577.png" alt="大数进行运算时,丢失精度"><br>三观又被颠覆了。</p>
+</li>
+</ul>
+<ul>
+<li>toFixed 不会四舍五入（Chrome）<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.335</span>.toFixed(<span class="number">2</span>) <span class="comment">// 1.33</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Chrome</code>输出对应的结果</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106171323805-1404560600.png" alt="小数没有四舍五入"></p>
+<h4 id="JS-数字丢失精度的原因"><a href="#JS-数字丢失精度的原因" class="headerlink" title="JS 数字丢失精度的原因"></a>JS 数字丢失精度的原因</h4><p>计算机的二进制实现和位数限制有些数无法有限表示。就像一些无理数不能有限表示，如 圆周率 3.1415926…，1.3333… 等。JS 遵循 IEEE 754 规范，采用双精度存储（double precision），占用 64 bit。如图<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106171603555-975142832.png" alt="双精度 64位存储"></p>
+<ul>
+<li><p>意义</p>
+<ul>
+<li>1位用来表示符号位</li>
+<li>11位用来表示指数</li>
+<li>52位表示尾数</li>
+</ul>
+</li>
+<li><p>浮点数，比如</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span> &gt;&gt; <span class="number">0.0001</span> <span class="number">1001</span> <span class="number">1001</span> <span class="number">1001</span>…（<span class="number">1001</span>无限循环）</span><br><span class="line"><span class="number">0.2</span> &gt;&gt; <span class="number">0.0011</span> <span class="number">0011</span> <span class="number">0011</span> <span class="number">0011</span>…（<span class="number">0011</span>无限循环）</span><br></pre></td></tr></table></figure>
+<p>此时只能模仿十进制进行四舍五入了，但是二进制只有 0 和 1 两个，于是变为 0 舍 1 入。这即是计算机中部分浮点数运算时出现误差，丢失精度的根本原因。</p>
+<p>大整数的精度丢失和浮点数本质上是一样的，尾数位最大是 52 位，因此 JS 中能精准表示的最大整数是 Math.pow(2, 53)，十进制即 9007199254740992。<br>大于 9007199254740992 的可能会丢失精度</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">9007199254740992</span>     &gt;&gt; <span class="number">10000000000000.</span>.<span class="number">.000</span> <span class="comment">// 共计 53 个 0</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">1</span> &gt;&gt; <span class="number">10000000000000.</span>.<span class="number">.001</span> <span class="comment">// 中间 52 个 0</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">2</span> &gt;&gt; <span class="number">10000000000000.</span>.<span class="number">.010</span> <span class="comment">// 中间 51 个 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实际上</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">1</span> <span class="comment">// 丢失</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">2</span> <span class="comment">// 未丢失</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">3</span> <span class="comment">// 丢失</span></span><br><span class="line"><span class="number">9007199254740992</span> + <span class="number">4</span> <span class="comment">// 未丢失</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果如图<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106171828539-620146369.png" alt="大数进行运算时，chrome模拟的结果"></li>
+</ul>
+<p>以上，可以知道看似有穷的数字, 在计算机的二进制表示里却是无穷的，由于存储位数限制因此存在“舍去”，精度丢失就发生了。<br>想了解更深入的分析可以看这篇论文（又长又臭）：<a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" target="_blank" rel="noopener">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a></p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>对于整数，前端出现问题的几率可能比较低，毕竟很少有业务需要需要用到超大整数，只要运算结果不超过 Math.pow(2, 53) 就不会丢失精度。<br>对于小数，前端出现问题的几率还是很多的，尤其在一些电商网站涉及到金额等数据。解决方式：把小数放到位整数（乘倍数），再缩小回原来倍数（除倍数）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 0.1 + 0.2 </span></span><br><span class="line">(<span class="number">0.1</span>*<span class="number">10</span> + <span class="number">0.2</span>*<span class="number">10</span>) / <span class="number">10</span> == <span class="number">0.3</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>　　<br>以下是我写了一个对象，对小数的加减乘除运算丢失精度做了屏蔽。当然转换后的整数依然不能超过 9007199254740992。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * floatObj 包含加减乘除四个方法，能确保浮点数运算不丢失精度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 我们知道计算机编程语言里浮点数计算会存在精度丢失问题（或称舍入误差），其根本原因是二进制和实现位数限制有些数无法有限表示</span></span><br><span class="line"><span class="comment"> * 以下是十进制小数对应的二进制表示</span></span><br><span class="line"><span class="comment"> *      0.1 &gt;&gt; 0.0001 1001 1001 1001…（1001无限循环）</span></span><br><span class="line"><span class="comment"> *      0.2 &gt;&gt; 0.0011 0011 0011 0011…（0011无限循环）</span></span><br><span class="line"><span class="comment"> * 计算机里每种数据类型的存储是一个有限宽度，比如 JavaScript 使用 64 位存储数字类型，因此超出的会舍去。舍去的部分就是精度丢失的部分。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ** method **</span></span><br><span class="line"><span class="comment"> *  add / subtract / multiply /divide</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ** explame **</span></span><br><span class="line"><span class="comment"> *  0.1 + 0.2 == 0.30000000000000004 （多了 0.00000000000004）</span></span><br><span class="line"><span class="comment"> *  0.2 + 0.4 == 0.6000000000000001  （多了 0.0000000000001）</span></span><br><span class="line"><span class="comment"> *  19.9 * 100 == 1989.9999999999998 （少了 0.0000000000002）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * floatObj.add(0.1, 0.2) &gt;&gt; 0.3</span></span><br><span class="line"><span class="comment"> * floatObj.multiply(19.9, 100) &gt;&gt; 1990</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> floatObj = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 判断obj是否为一个整数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">isInteger</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.floor(obj) === obj</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 将一个浮点数转成整数，返回整数和倍数。如 3.14 &gt;&gt; 314，倍数是 100</span></span><br><span class="line"><span class="comment">     * @param floatNum &#123;number&#125; 小数</span></span><br><span class="line"><span class="comment">     * @return &#123;object&#125;</span></span><br><span class="line"><span class="comment">     *   &#123;times:100, num: 314&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">toInteger</span>(<span class="params">floatNum</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> ret = &#123;<span class="attr">times</span>: <span class="number">1</span>, <span class="attr">num</span>: <span class="number">0</span>&#125;</span><br><span class="line">        <span class="keyword">var</span> isNegative = floatNum &lt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> (isInteger(floatNum)) &#123;</span><br><span class="line">            ret.num = floatNum</span><br><span class="line">            <span class="keyword">return</span> ret</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> strfi  = floatNum + <span class="string">''</span></span><br><span class="line">        <span class="keyword">var</span> dotPos = strfi.indexOf(<span class="string">'.'</span>)</span><br><span class="line">        <span class="keyword">var</span> len    = strfi.substr(dotPos+<span class="number">1</span>).length</span><br><span class="line">        <span class="keyword">var</span> times  = <span class="built_in">Math</span>.pow(<span class="number">10</span>, len)</span><br><span class="line">        <span class="keyword">var</span> intNum = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.abs(floatNum) * times + <span class="number">0.5</span>, <span class="number">10</span>)</span><br><span class="line">        ret.times  = times</span><br><span class="line">        <span class="keyword">if</span> (isNegative) &#123;</span><br><span class="line">            intNum = -intNum</span><br><span class="line">        &#125;</span><br><span class="line">        ret.num = intNum</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 核心方法，实现加减乘除运算，确保不丢失精度</span></span><br><span class="line"><span class="comment">     * 思路：把小数放大为整数（乘），进行算术运算，再缩小为小数（除）</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param a &#123;number&#125; 运算数1</span></span><br><span class="line"><span class="comment">     * @param b &#123;number&#125; 运算数2</span></span><br><span class="line"><span class="comment">     * @param digits &#123;number&#125; 精度，保留的小数点数，比如 2, 即保留为两位小数</span></span><br><span class="line"><span class="comment">     * @param op &#123;string&#125; 运算类型，有加减乘除（add/subtract/multiply/divide）</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">operation</span>(<span class="params">a, b, digits, op</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> o1 = toInteger(a)</span><br><span class="line">        <span class="keyword">var</span> o2 = toInteger(b)</span><br><span class="line">        <span class="keyword">var</span> n1 = o1.num</span><br><span class="line">        <span class="keyword">var</span> n2 = o2.num</span><br><span class="line">        <span class="keyword">var</span> t1 = o1.times</span><br><span class="line">        <span class="keyword">var</span> t2 = o2.times</span><br><span class="line">        <span class="keyword">var</span> max = t1 &gt; t2 ? t1 : t2</span><br><span class="line">        <span class="keyword">var</span> result = <span class="literal">null</span></span><br><span class="line">        <span class="keyword">switch</span> (op) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'add'</span>:</span><br><span class="line">                <span class="keyword">if</span> (t1 === t2) &#123; <span class="comment">// 两个小数位数相同</span></span><br><span class="line">                    result = n1 + n2</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t1 &gt; t2) &#123; <span class="comment">// o1 小数位 大于 o2</span></span><br><span class="line">                    result = n1 + n2 * (t1 / t2)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123; <span class="comment">// o1 小数位 小于 o2</span></span><br><span class="line">                    result = n1 * (t2 / t1) + n2</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> result / max</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'subtract'</span>:</span><br><span class="line">                <span class="keyword">if</span> (t1 === t2) &#123;</span><br><span class="line">                    result = n1 - n2</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t1 &gt; t2) &#123;</span><br><span class="line">                    result = n1 - n2 * (t1 / t2)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    result = n1 * (t2 / t1) - n2</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> result / max</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'multiply'</span>:</span><br><span class="line">                result = (n1 * n2) / (t1 * t2)</span><br><span class="line">                <span class="keyword">return</span> result</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'divide'</span>:</span><br><span class="line">                result = (n1 / n2) * (t2 / t1)</span><br><span class="line">                <span class="keyword">return</span> result</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 加减乘除的四个接口</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b, digits</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> operation(a, b, digits, <span class="string">'add'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">subtract</span>(<span class="params">a, b, digits</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> operation(a, b, digits, <span class="string">'subtract'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">a, b, digits</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> operation(a, b, digits, <span class="string">'multiply'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">divide</span>(<span class="params">a, b, digits</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> operation(a, b, digits, <span class="string">'divide'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// exports</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        add: add,</span><br><span class="line">        subtract: subtract,</span><br><span class="line">        multiply: multiply,</span><br><span class="line">        divide: divide</span><br><span class="line">    &#125;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>toFixed</code>的修复如下</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// toFixed 修复</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">toFixed</span>(<span class="params">num, s</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> times = <span class="built_in">Math</span>.pow(<span class="number">10</span>, s)</span><br><span class="line">    <span class="keyword">var</span> des = num * times + <span class="number">0.5</span></span><br><span class="line">    des = <span class="built_in">parseInt</span>(des, <span class="number">10</span>) / times</span><br><span class="line">    <span class="keyword">return</span> des + <span class="string">''</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2020/06/16/js%E6%95%B0%E5%AD%97%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6/" data-id="ckbhgqnd000007oqy6vjn1ze5" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B7%B1%E5%85%A5js/" rel="tag">深入js</a></li></ul>
+
     </footer>
   </div>
   
@@ -399,61 +598,75 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="http-浅析"><a href="#http-浅析" class="headerlink" title="http 浅析"></a>http 浅析</h2><h3 id="http的一些概述"><a href="#http的一些概述" class="headerlink" title="http的一些概述"></a>http的一些概述</h3><p>超文本传输​​协议（<code>HTTP</code>）是一个用于传输超媒体文档（例如 <code>HTML</code>）的应用层协议。它是为 <code>Web</code> 浏览器与 <code>Web</code> 服务器之间的通信而设计的，但也可以用于其他目的。<code>HTTP</code> 遵循经典的客户端-服务端模型，客户端打开一个连接以发出请求，然后等待它收到服务器端响应。<code>HTTP</code> 是无状态协议，这意味着服务器不会在两个请求之间保留任何数据（状态）。该协议虽然通常基于 <code>TCP/IP</code> 层，但可以在任何可靠的传输层上使用；也就是说，不像 <code>UDP</code>，它是一个不会静默丢失消息的协议。一个完整的请求</p>
-<img  src="https://mdn.mozillademos.org/files/13677/Fetching_a_page.png"/>
-
+<p><img src="https://mdn.mozillademos.org/files/13677/Fetching_a_page.png" alt="http请求的一些应用"></p>
 <h4 id="http首部"><a href="#http首部" class="headerlink" title="http首部"></a>http首部</h4><p><code>HTTP</code> 消息头允许客户端和服务器通过 <code>request</code>和 <code>response</code>传递附加信息。一个请求头由名称（不区分大小写）后跟一个冒号“：”，冒号后跟具体的值（不带换行符）组成。该值前面的引导空白会被忽略。<br>根据不同上下文，可将消息头分为：</p>
 <ul>
-<li><code>General headers</code>: 同时适用于请求和响应消息，但与最终消息主体中传输的数据无关的消息头。<ul>
+<li><p><code>General headers</code>: 同时适用于请求和响应消息，但与最终消息主体中传输的数据无关的消息头。</p>
+<ul>
 <li>常见的有<code>Date、Cache-Control 或 Connection</code>。</li>
 </ul>
 </li>
-<li><code>Request headers</code>: 包含更多有关要获取的资源或客户端本身信息的消息头。<ul>
+<li><p><code>Request headers</code>: 包含更多有关要获取的资源或客户端本身信息的消息头。</p>
+<ul>
 <li>请求头是<code>HTTP</code>头的一种，它可在<code>HTTP</code>请求中使用，并且和请求主体无关 。某些请求头如 <code>Accept、Accept-*、 If-*</code>允许执行条件请求。某些请求头如：<code>Cookie, User-Agent 和 Referer</code>描述了请求本身以确保服务端能返回正确的响应</li>
 </ul>
 </li>
-<li><code>Response headers</code>: 包含有关响应的补充信息，如其位置或服务器本身（名称和版本等）的消息头。<ul>
+<li><p><code>Response headers</code>: 包含有关响应的补充信息，如其位置或服务器本身（名称和版本等）的消息头。</p>
+<ul>
 <li>响应头<code>（Response header</code>可以定义为：被用于<code>http</code>响应中并且和响应消息主体无关的那一类 <code>HTTP header</code>。像<code>Age, Location 和 Server</code>都属于响应头，他们被用于描述响应。</li>
 </ul>
 </li>
-<li><code>Entity headers</code>: 包含有关实体主体的更多信息，比如主体长(<code>Content-Length</code>)度或其<code>MIME</code>类型。<ul>
+<li><p><code>Entity headers</code>: 包含有关实体主体的更多信息，比如主体长(<code>Content-Length</code>)度或其<code>MIME</code>类型。</p>
+<ul>
 <li>实体报头<code>HTTP header</code>用来描述消息体内容。实体报头既可用于请求也可用于响应中。如<code>Content-Length，Content-Language，Content-Encoding</code>之类的报头都是实体报头<h4 id="http请求的方法"><a href="#http请求的方法" class="headerlink" title="http请求的方法"></a>http请求的方法</h4></li>
 </ul>
 </li>
-<li><code>GET</code><ul>
+<li><p><code>GET</code></p>
+<ul>
 <li><code>GET</code>方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据.</li>
 </ul>
 </li>
-<li><code>HEAD</code><ul>
+<li><p><code>HEAD</code></p>
+<ul>
 <li><code>HEAD</code>方法请求一个与GET请求的响应相同的响应，但没有响应体.</li>
 </ul>
 </li>
-<li><code>POST</code><ul>
+<li><p><code>POST</code></p>
+<ul>
 <li><code>POST</code>方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用. </li>
 </ul>
 </li>
-<li><code>PUT</code><br>  *<code>PUT</code>方法用请求有效载荷替换目标资源的所有当前表示。</li>
-<li><code>DELETE</code><ul>
+<li><p><code>PUT</code><br>  *<code>PUT</code>方法用请求有效载荷替换目标资源的所有当前表示。</p>
+</li>
+<li><p><code>DELETE</code></p>
+<ul>
 <li><code>DELETE</code>方法删除指定的资源。</li>
 </ul>
 </li>
-<li><code>CONNECT</code><ul>
+<li><p><code>CONNECT</code></p>
+<ul>
 <li><code>CONNECT</code>方法建立一个到由目标资源标识的服务器的隧道。</li>
 </ul>
 </li>
-<li><code>OPTIONS</code><ul>
+<li><p><code>OPTIONS</code></p>
+<ul>
 <li><code>OPTIONS</code>方法用于描述目标资源的通信选项。</li>
 </ul>
 </li>
-<li><code>TRACE</code><ul>
+<li><p><code>TRACE</code></p>
+<ul>
 <li><code>TRACE</code>方法沿着到目标资源的路径执行一个消息环回测试。</li>
 </ul>
 </li>
-<li><code>PATCH</code><ul>
+<li><p><code>PATCH</code></p>
+<ul>
 <li><code>PATCH</code>方法用于对资源应用部分修改。<h4 id="http状态返回码"><a href="#http状态返回码" class="headerlink" title="http状态返回码"></a>http状态返回码</h4></li>
 </ul>
 </li>
-<li><strong>100</strong> 信息响应</li>
-<li><strong>200</strong>: ok. 表示请求成功<ul>
+<li><p><strong>100</strong> 信息响应</p>
+</li>
+<li><p><strong>200</strong>: ok. 表示请求成功</p>
+<ul>
 <li><strong>201 Created</strong><ul>
 <li>该请求已成功,并因此创建了一个新的资源.这通常是在<code>POST</code>请求,或是某些<code>PUT</code>请求之后返回的响应</li>
 </ul>
@@ -468,7 +681,8 @@
 </li>
 </ul>
 </li>
-<li><strong>300</strong>: 重定向<ul>
+<li><p><strong>300</strong>: 重定向</p>
+<ul>
 <li><strong>301 永久重定向</strong><ul>
 <li>被请求的资源已永久移动到新位置,并且将来任何对此资源的引用都应该使用本响应返回的若干个<code>URL</code>之一.浏览器会用新资源地址替换掉之前老的.下次请求直接使用新的资源地址.</li>
 </ul>
@@ -478,7 +692,54 @@
 </ul>
 </li>
 <li><strong>304 Not Modified</strong><ul>
-<li>资源没有做改动, 可以使用缓存<h4 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h4>http缓存主要分为强缓存和协商缓存. 强缓存浏览器直接使用,缓存资源. 协商缓存,会向服务端发送请求,咨询缓存是否新鲜可用.</li>
+<li>资源没有做改动, 可以使用缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>400</strong>: 客户端响应</p>
+<ul>
+<li><strong>400 Bad Request</strong><ul>
+<li>语义有误,当前请求无法被服务器理解</li>
+<li>请求参数有误</li>
+</ul>
+</li>
+<li><strong>401 Unauthorized</strong><ul>
+<li>当前请求需要用户验证</li>
+</ul>
+</li>
+<li><strong>403 Forbidden</strong><ul>
+<li>服务器已经理解请求,但是拒绝执行它</li>
+</ul>
+</li>
+<li><strong>404 Not Found</strong><ul>
+<li>请求失败,请求所希望的资源未被在服务器上发现</li>
+</ul>
+</li>
+<li><strong>408 Request Timeout</strong></li>
+<li><strong>406 Not Acceptable</strong></li>
+</ul>
+</li>
+<li><p><strong>500 服务端响应</strong></p>
+<ul>
+<li><strong>500 Internal Server Error</strong><ul>
+<li>服务器遇到了不知道如何处理的情况</li>
+</ul>
+</li>
+<li><strong>501 Not Implemented</strong><ul>
+<li>此请求方法不被服务器支持且无法被处理</li>
+</ul>
+</li>
+<li><strong>502 Bad Gateway</strong><ul>
+<li>此错误响应表明服务器作为网关需要得到一个处理这个请求的响应，但是得到一个错误的响应</li>
+</ul>
+</li>
+<li><strong>503 Service Unavailable</strong><ul>
+<li>服务器没有准备好处理请求。</li>
+</ul>
+</li>
+<li><strong>504 Gateway Timeout</strong><ul>
+<li>当服务器作为网关, 不能及时得到响应时返回此错误代码.<h4 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h4>http缓存主要分为强缓存和协商缓存. 强缓存浏览器直接使用,缓存资源. 协商缓存,会向服务端发送请求,咨询缓存是否新鲜可用.</li>
 </ul>
 </li>
 </ul>
@@ -621,12 +882,13 @@
 <li>数据被篡改<h4 id="HTTPS-加密的方式"><a href="#HTTPS-加密的方式" class="headerlink" title="HTTPS 加密的方式"></a>HTTPS 加密的方式</h4>首先先了解对称加密和非对称加密方式.</li>
 </ol>
 <ul>
-<li><p>对称加密<br>需要对加密和解密使用相同密钥的加密算法。所谓对称，就是采用这种加密方法的双方使用方式用同样的密钥进行加密和解密。密钥是控制加密及解密过程的指令。算法是一组规则，规定如何进行加密和解密。</p>
-<ul>
+<li>对称加密<br>需要对加密和解密使用相同密钥的加密算法。所谓对称，就是采用这种加密方法的双方使用方式用同样的密钥进行加密和解密。密钥是控制加密及解密过程的指令。算法是一组规则，规定如何进行加密和解密。<ul>
 <li>优点：对称加密算法的优点是算法公开、计算量小、加密速度快、加密效率高。</li>
 <li>缺点：对称加密，密钥管理的安全性很低，因为加密和解密都使用同一个密钥，在密钥的发送过程中，密钥可能被第三方截取，导致第三方也可以破解密文。</li>
 </ul>
 </li>
+</ul>
+<ul>
 <li><p>非对称加密<br>非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。如果用公钥对数据进行加密，只有用对应的私钥才能解密。因为加密和解密使用的是两个不同的密钥，所以这种算法叫作非对称加密算法。<br>非对称密钥的算法强度复杂（是优点也是缺点），安全性依赖于算法与密钥。</p>
 <ul>
 <li>优点：安全性较高，比对称密钥安全性高很多。 非对称加密算法的保密性比较好，它消除了最终用户交换密钥的需要。</li>
@@ -635,12 +897,12 @@
 </li>
 <li><p><code>HTTPS</code>采用的处理方式是: 结合对称加密和非对称加密俩种方式. 用非对称加密的方式来传输对称加密过程中的密钥,之后就可以采取对称加密的方式来传输数据</p>
 </li>
-<li><p>非对称加密的不足: 再交换公钥的过程中, 是明文传输的,如果传输的过程中被人劫持.拿到客户端的公钥. 然后中间人把自己的公钥给服务器. 服务器返回自己的公钥,又被中间人劫持. 中间人把自己的公钥给客户端. 然后客户端用中间人返回的公钥对秘钥进行加密, 发给中间人. 中间人中公钥进行解密. 的到秘钥.<br><img src="http://res.hualala.com/basicdoc/e1d1d51f-d4fc-492c-957a-e0eb7cf785fe.png" alt="密钥被中间人劫持">  </p>
+<li><p>非对称加密的不足: 再交换公钥的过程中, 是明文传输的,如果传输的过程中被人劫持.拿到客户端的公钥. 然后中间人把自己的公钥给服务器. 服务器返回自己的公钥,又被中间人劫持. 中间人把自己的公钥给客户端. 然后客户端用中间人返回的公钥对秘钥进行加密, 发给中间人. 中间人中公钥进行解密得到秘钥.<br><img src="https://res.hualala.com/basicdoc/e1d1d51f-d4fc-492c-957a-e0eb7cf785fe.png" alt="密钥被中间人劫持">  </p>
 </li>
 <li><p>证书的引入<br>非对称性加密之所以不安全，是应为客户端不知道，这把公钥是不是服务器的。因此，我们需要找到一种策略来证明这把公钥就是服务器的，而不是别人冒充的。解决这个问题的方式就是使用数字证书，具体是这样的：</p>
 </li>
 </ul>
-<p>1、我们需要找到一个第三方机构，它是一个拥有公信力、大家都认可的认证中心，那就是数字证书认证机构(简称CA)。<br>2、服务器在给客户端传输公钥的过程中，会把公钥以及服务器的个人信息通过Hash算法生成信息摘要。为了防止信息摘要被人调换，客户端还会用CA提供的私钥对信息摘要进行加密来形成数字签名。并且，最后还会把原来没Hash算法之前的个人信息以及公钥和数字签名合并在一起，形成数字证书。<br>3、当客户端拿到这份数字证书之后，就会用CA提供的公钥来对数字证书里面的数字签名进行解密来得到信息摘要，然后对数字证书里服务器的公钥以及个人信息进行Hash得到另外一份信息摘要。最后把两份信息摘要进行对比，如果一样，则证明这个人是服务器，否则就不是。这样，就可以保证服务器的公钥安全着交给客户端了。<br><img src="http://res.hualala.com/basicdoc/b16b2bb0-67d4-43f2-87fc-120e90ad276b.png" alt="https加密的流程"></p>
+<p>1、我们需要找到一个第三方机构，它是一个拥有公信力、大家都认可的认证中心，那就是数字证书认证机构(简称CA)。<br>2、服务器在给客户端传输公钥的过程中，会把公钥以及服务器的个人信息通过Hash算法生成信息摘要。为了防止信息摘要被人调换，客户端还会用CA提供的私钥对信息摘要进行加密来形成数字签名。并且，最后还会把原来没Hash算法之前的个人信息以及公钥和数字签名合并在一起，形成数字证书。<br>3、当客户端拿到这份数字证书之后，就会用CA提供的公钥来对数字证书里面的数字签名进行解密来得到信息摘要，然后对数字证书里服务器的公钥以及个人信息进行Hash得到另外一份信息摘要。最后把两份信息摘要进行对比，如果一样，则证明这个人是服务器，否则就不是。这样，就可以保证服务器的公钥安全着交给客户端了。<br><img src="https://res.hualala.com/basicdoc/b16b2bb0-67d4-43f2-87fc-120e90ad276b.png" alt="https加密的流程"></p>
 <h4 id="HTTPS的优点"><a href="#HTTPS的优点" class="headerlink" title="HTTPS的优点"></a>HTTPS的优点</h4><p>尽管<code>HTTPS</code>并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但<code>HTTPS</code>仍是现行架构下最安全的解决方案，主要有以下几个好处：</p>
 <ul>
 <li>使用<code>HTTPS</code>协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；</li>
@@ -864,7 +1126,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
+      <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 15px;">浏览器</a> <a href="/tags/%E6%B7%B1%E5%85%A5js/" style="font-size: 20px;">深入js</a>
     </div>
   </div>
 
@@ -890,7 +1152,7 @@
           </li>
         
           <li>
-            <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
+            <a href="/2020/06/16/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染简介</a>
           </li>
         
           <li>
