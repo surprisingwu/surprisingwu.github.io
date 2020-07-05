@@ -7,15 +7,14 @@
   
   <title>js数字丢失精度 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JavaScript数字精度丢失问题总结本文分为三个部分  JS 数字精度丢失的一些典型问题 JS 数字精度丢失的原因 解决方案（一个对象+一个函数）  JS数字精度丢失的一些典型问题 两个简单的浮点数相加  10.1 + 0.2 !&#x3D; 0.3 &#x2F;&#x2F; true&#96;  Chrome控制台模拟对应的小数运算.  看看Java的运算结果  再看看Python    大整数运算  1999999999999">
+  <meta name="description" content="JavaScript数字精度丢失问题总结本文分为三个部分  JS 数字精度丢失的一些典型问题 JS 数字精度丢失的原因 解决方案（一个对象+一个函数）  JS数字精度丢失的一些典型问题 两个简单的浮点数相加  10.1 + 0.2 !&#x3D; 0.3 &#x2F;&#x2F; true&#96;  Chrome控制台模拟对应的小数运算.    Java和Python 同样会出现这种问题:    大整数运算  19999999999">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js数字丢失精度">
 <meta property="og:url" content="http://yoursite.com/2020/06/16/js%E6%95%B0%E5%AD%97%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="JavaScript数字精度丢失问题总结本文分为三个部分  JS 数字精度丢失的一些典型问题 JS 数字精度丢失的原因 解决方案（一个对象+一个函数）  JS数字精度丢失的一些典型问题 两个简单的浮点数相加  10.1 + 0.2 !&#x3D; 0.3 &#x2F;&#x2F; true&#96;  Chrome控制台模拟对应的小数运算.  看看Java的运算结果  再看看Python    大整数运算  1999999999999">
+<meta property="og:description" content="JavaScript数字精度丢失问题总结本文分为三个部分  JS 数字精度丢失的一些典型问题 JS 数字精度丢失的原因 解决方案（一个对象+一个函数）  JS数字精度丢失的一些典型问题 两个简单的浮点数相加  10.1 + 0.2 !&#x3D; 0.3 &#x2F;&#x2F; true&#96;  Chrome控制台模拟对应的小数运算.    Java和Python 同样会出现这种问题:    大整数运算  19999999999">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://res.hualala.com/basicdoc/442e7b3f-8430-4604-ba8f-b04e68cbd078.png">
-<meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170748524-1081159205.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170830461-1451288842.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170956227-1489805455.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151107173235774-1370728577.png">
@@ -23,7 +22,7 @@
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106171603555-975142832.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106171828539-620146369.png">
 <meta property="article:published_time" content="2020-06-16T05:03:42.000Z">
-<meta property="article:modified_time" content="2020-06-27T15:14:57.306Z">
+<meta property="article:modified_time" content="2020-06-30T07:52:33.440Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="深入js">
 <meta name="twitter:card" content="summary">
@@ -109,13 +108,13 @@
 </ul>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span> + <span class="number">0.2</span> != <span class="number">0.3</span> <span class="comment">// true`</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><p><code>Chrome</code>控制台模拟对应的小数运算.<br><img src="https://res.hualala.com/basicdoc/442e7b3f-8430-4604-ba8f-b04e68cbd078.png" alt="小数相加丢失精度"></p>
-</li>
-<li><p>看看<code>Java</code>的运算结果<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170748524-1081159205.png" alt="java 进行浮点数运算时,也是如此"></p>
-</li>
-<li><p>再看看Python<br><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170830461-1451288842.png" alt="主要是机制的问题"></p>
-</li>
+<li><code>Chrome</code>控制台模拟对应的小数运算.</li>
 </ul>
+<p><img src="https://res.hualala.com/basicdoc/442e7b3f-8430-4604-ba8f-b04e68cbd078.png" alt="小数相加丢失精度"></p>
+<ul>
+<li><code>Java和Python</code> 同样会出现这种问题:</li>
+</ul>
+<p><img src="https://images2015.cnblogs.com/blog/114013/201511/114013-20151106170830461-1451288842.png" alt="主要是机制的问题"></p>
 <ul>
 <li>大整数运算</li>
 </ul>

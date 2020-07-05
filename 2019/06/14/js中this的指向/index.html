@@ -7,13 +7,15 @@
   
   <title>js中this的指向 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="this的指向按照调用的方式分类作为普通的函数调用 分为严格模式和非严格模式, 严格模式下为undefined, 非严格模式下指向全局对象  12345678910111213const a &#x3D; 18function test() &amp;#123;    console.log(this.a)&amp;#125;test() &#x2F;&#x2F; 18function _test() &amp;#123;    &quot;use stric">
+<meta property="og:type" content="article">
 <meta property="og:title" content="js中this的指向">
 <meta property="og:url" content="http://yoursite.com/2019/06/14/js%E4%B8%ADthis%E7%9A%84%E6%8C%87%E5%90%91/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="this的指向按照调用的方式分类作为普通的函数调用 分为严格模式和非严格模式, 严格模式下为undefined, 非严格模式下指向全局对象  12345678910111213const a &#x3D; 18function test() &amp;#123;    console.log(this.a)&amp;#125;test() &#x2F;&#x2F; 18function _test() &amp;#123;    &quot;use stric">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-06-14T06:17:51.000Z">
-<meta property="article:modified_time" content="2020-06-14T06:18:50.462Z">
+<meta property="article:modified_time" content="2020-07-05T15:26:16.642Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="深入js">
 <meta name="twitter:card" content="summary">
@@ -87,7 +89,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h3 id="this的指向按照调用的方式分类"><a href="#this的指向按照调用的方式分类" class="headerlink" title="this的指向按照调用的方式分类"></a>this的指向按照调用的方式分类</h3><h4 id="作为普通的函数调用"><a href="#作为普通的函数调用" class="headerlink" title="作为普通的函数调用"></a>作为普通的函数调用</h4><ul>
+<li>分为严格模式和非严格模式, 严格模式下为<code>undefined</code>, 非严格模式下指向全局对象</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="number">18</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test() <span class="comment">// 18</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    "use strict"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line">_test() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>要注意一些隐式绑定的情况. 如<code>DOM</code>绑定事件的处理函数,里面的<code>this</code>指向触发的元素. </li>
+<li>箭头函数<code>this</code>的指向, 再函数书写的时候, 就已经确定了,且无法更改,也不能作为构造函数使用.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">domEl.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.innerHTML = <span class="string">'Hello World !'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">    test() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`my age is <span class="subst">$&#123;<span class="keyword">this</span>.age&#125;</span>`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="作为对象的方法调用"><a href="#作为对象的方法调用" class="headerlink" title="作为对象的方法调用"></a>作为对象的方法调用</h4><ul>
+<li>作为对象的方法调用时, 方法内的<code>this</code>指向调用的对象</li>
+<li>需要注意的是, 如果对象的方法赋值给了其它变量, 相当于失去了这种引用关系. 也就和普通的函数调用没有什么区别了.<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">    sayAge() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`My age is always <span class="subst">$&#123;<span class="keyword">this</span>.age&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">o.sayAge() </span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fn = o.sayAge()</span><br><span class="line">fn() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<h4 id="作为构造函数调用"><a href="#作为构造函数调用" class="headerlink" title="作为构造函数调用"></a>作为构造函数调用</h4></li>
+<li>调用构造函数时, 函数内部的<code>this</code>指向创建出的实例.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Super(<span class="string">'wyt'</span>, <span class="number">18</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name, <span class="keyword">this</span>.age)</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过其他方式改变this的指向"><a href="#通过其他方式改变this的指向" class="headerlink" title="通过其他方式改变this的指向"></a>通过其他方式改变this的指向</h4><ul>
+<li>函数的<code>call apply bind 箭头函数</code>都可以改变<code>this</code>的指向<ul>
+<li><code>call apply</code>都是借用函数的调用, 第一个参数要求是一个对象类型.函数调用时,<code>this</code>指向该对象<ul>
+<li>如果第一个参数传的不是对象, 会隐式转化成对应的包装类型. 如果传入<code>null | undefined</code>, 则会被忽略掉.</li>
+</ul>
+</li>
+<li><code>bind</code>接收第一个参数作为函数调用<code>this</code>的指向,还可以接收其它参数, 然后返回一个函数.</li>
+<li>箭头函数声明时,会绑定函数上下文的<code>this</code>, 且无法修改.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">    age: <span class="number">10</span>, </span><br><span class="line">    sex: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`My age is <span class="subst">$&#123;<span class="keyword">this</span>.age&#125;</span>, my name is <span class="subst">$&#123;name&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1.call(o, <span class="string">'wyt'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(f1.bind(o), <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> test = &#123;</span><br><span class="line">    age: <span class="number">10</span>,</span><br><span class="line">    _test() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.age)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">

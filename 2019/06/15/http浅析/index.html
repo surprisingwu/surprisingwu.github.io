@@ -20,9 +20,10 @@
 <meta property="og:image" content="https://yqfile.alicdn.com/c49f722ce22ba69422f9f44a2e8a67c318f1d5f4.png">
 <meta property="og:image" content="https://pic4.zhimg.com/80/b1e608ddb7493608efea3e76912aabe1_1440w.jpg">
 <meta property="og:image" content="https://res.hualala.com/basicdoc/e1d1d51f-d4fc-492c-957a-e0eb7cf785fe.png">
+<meta property="og:image" content="https://i.postimg.cc/k4DqnDbc/https.png">
 <meta property="og:image" content="https://res.hualala.com/basicdoc/b16b2bb0-67d4-43f2-87fc-120e90ad276b.png">
 <meta property="article:published_time" content="2019-06-15T15:07:57.000Z">
-<meta property="article:modified_time" content="2020-06-26T15:43:17.301Z">
+<meta property="article:modified_time" content="2020-07-01T01:41:13.009Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="http">
 <meta name="twitter:card" content="summary">
@@ -355,9 +356,9 @@
 </ul>
 <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h3><p><strong>CDN</strong>的全称是<strong>Content Delivery Network</strong>, 即内容分发网络.其目的是使用户可就近取得所需内容，解决 <strong>Internet</strong>网络拥挤的状况，提高用户访问网站的响应速度。类似分布各地的物流仓储网络，<strong>CDN</strong>网络可以将源站的内容缓存到分布全球的<strong>CDN</strong>节点，根据用户的访问<strong>IP</strong>，就近连接<strong>CDN</strong>，提高网站响应速度。<br><img src="https://yqfile.alicdn.com/c49f722ce22ba69422f9f44a2e8a67c318f1d5f4.png"/></p>
 <h4 id="为什么要使用CDN"><a href="#为什么要使用CDN" class="headerlink" title="为什么要使用CDN"></a>为什么要使用CDN</h4><p>从上面的流程中我们可以简单了解到源站访问的缺陷<br>需要通过情况复杂的路由链路，用户请求网页到网页最终呈现的时间太长。用户满意的网页打开时间是在2秒以下，用户能够忍受的极限等待时间是8秒，超过8秒大部分用户会选择离开网页。<br>连接质量受源站带宽限制，每增加一个用户，源站服务器就要扩充一份带宽才能满足需求，然而带宽的成本非常高<br>连接数量受服务器性能限制，所有请求都需要源站服务器处理<br>CDN通过分布式方案，通过空间换时间的方法，用冗余的空间换取时间，是典型的分布式实例。上述问题的核心就是用户和网站服务器的物理距离以及传输速度，CDN通过缓存机制简单粗暴地缩短用户和访问内容的距离，以达到加速访问的效果。</p>
-<h4 id="CDN原理"><a href="#CDN原理" class="headerlink" title="CDN原理"></a>CDN原理</h4><p>CDN原理很简单，实现也非常清晰，具体做法就是将网站的内容——比如图片、文字、视频——存在不同地理位置的服务器上，称为CDN节点。<br>举例来说，某网站的主机在北京市的机房内，如网站不使用CDN，那么广东的用户访问该网站的时延就是数据包从广东到北京来回的时间。如果该网站使用了CDN，并且这家CDN在广州架设了节点，那么广东的用户去访问被缓存的内容时只要等待数据包在广东内传输的时间即可，以此达到加速的效果。 </p>
+<h4 id="CDN原理"><a href="#CDN原理" class="headerlink" title="CDN原理"></a>CDN原理</h4><p>CDN原理很简单，实现也非常清晰，具体做法就是将网站的内容——比如图片、文字、视频——<strong>把一些资源存在不同地理位置的服务器上，称为CDN节点</strong>。<br>举例来说，某网站的主机在北京市的机房内，如网站不使用<code>CDN</code>，那么广东的用户访问该网站的时延就是数据包从广东到北京来回的时间。如果该网站使用了<code>CDN</code>，并且这家CDN在广州架设了节点，那么广东的用户去访问被缓存的内容时只要等待数据包在广东内传输的时间即可，以此达到加速的效果。 </p>
 <ul>
-<li><p>分发服务系统：最基本的工作单元就是Cache设备，cache（边缘cache）负责直接响应最终用户的访问请求，把缓存在本地的内容快速地提供给用 户。同时cache还负责与源站点进行内容同步，把更新的内容以及本地没有的内容从源站点获取并保存在本地。Cache设备的数量、规模、总服务能力是衡 量一个CDN系统服务能力的最基本的指标</p>
+<li><p>分发服务系统：最基本的工作单元就是<code>Cache</code>设备，<code>cache</code>（边缘<code>cache</code>）负责直接响应最终用户的访问请求，把缓存在本地的内容快速地提供给用户。同时<code>cache</code>还负责与源站点进行内容同步，把更新的内容以及本地没有的内容从源站点获取并保存在本地。<code>Cache</code>设备的数量、规模、总服务能力是衡 量一个<code>CDN</code>系统服务能力的最基本的指标</p>
 </li>
 <li><p>负载均衡系统：主要功能是负责对所有发起服务请求的用户进行访问调度，确定提供给用户的最终实际访问地址。两级调度体系分为全局负载均衡（<code>GSLB</code>）和本地负载均衡（<code>SLB</code>）。<code>GSLB</code>主要根据用户就近性原则，通过对每个服务节点进行“最优”判断，确定向用户提供服务的<code>cache</code>的物理位置。<code>SLB</code>主要负责节点内部的设备负载均衡</p>
 </li>
@@ -379,8 +380,9 @@
 <ol>
 <li>重要数据被明文获取</li>
 <li>通信双方可能被伪冒</li>
-<li>数据被篡改<h4 id="HTTPS-加密的方式"><a href="#HTTPS-加密的方式" class="headerlink" title="HTTPS 加密的方式"></a>HTTPS 加密的方式</h4>首先先了解对称加密和非对称加密方式.</li>
+<li>数据被篡改</li>
 </ol>
+<h4 id="HTTPS-加密的方式"><a href="#HTTPS-加密的方式" class="headerlink" title="HTTPS 加密的方式"></a>HTTPS 加密的方式</h4><p>首先先了解对称加密和非对称加密方式.</p>
 <ul>
 <li>对称加密<br>需要对加密和解密使用相同密钥的加密算法。所谓对称，就是采用这种加密方法的双方使用方式用同样的密钥进行加密和解密。密钥是控制加密及解密过程的指令。算法是一组规则，规定如何进行加密和解密。<ul>
 <li>优点：对称加密算法的优点是算法公开、计算量小、加密速度快、加密效率高。</li>
@@ -389,7 +391,7 @@
 </li>
 </ul>
 <ul>
-<li><p>非对称加密<br>非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。如果用公钥对数据进行加密，只有用对应的私钥才能解密。因为加密和解密使用的是两个不同的密钥，所以这种算法叫作非对称加密算法。<br>非对称密钥的算法强度复杂（是优点也是缺点），安全性依赖于算法与密钥。</p>
+<li><p>非对称加密<br>非对称加密算法需要两个密钥：公开密钥（<code>publickey</code>:简称公钥）和私有密钥（<code>privatekey</code>:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。因为加密和解密使用的是两个不同的密钥，所以这种算法叫作非对称加密算法。<br>非对称密钥的算法强度复杂（是优点也是缺点），安全性依赖于算法与密钥。</p>
 <ul>
 <li>优点：安全性较高，比对称密钥安全性高很多。 非对称加密算法的保密性比较好，它消除了最终用户交换密钥的需要。</li>
 <li>缺点：由于其算法复杂，而使得加密解密速度没有对称加密解密的速度快。</li>
@@ -399,10 +401,16 @@
 </li>
 <li><p>非对称加密的不足: 再交换公钥的过程中, 是明文传输的,如果传输的过程中被人劫持.拿到客户端的公钥. 然后中间人把自己的公钥给服务器. 服务器返回自己的公钥,又被中间人劫持. 中间人把自己的公钥给客户端. 然后客户端用中间人返回的公钥对秘钥进行加密, 发给中间人. 中间人中公钥进行解密得到秘钥.<br><img src="https://res.hualala.com/basicdoc/e1d1d51f-d4fc-492c-957a-e0eb7cf785fe.png" alt="密钥被中间人劫持">  </p>
 </li>
-<li><p>证书的引入<br>非对称性加密之所以不安全，是应为客户端不知道，这把公钥是不是服务器的。因此，我们需要找到一种策略来证明这把公钥就是服务器的，而不是别人冒充的。解决这个问题的方式就是使用数字证书，具体是这样的：</p>
+<li><p>证书的引入<br>非对称性加密之所以不安全，是应为客户端不知道，这把公钥是不是服务器的。因此，我们需要找到一种策略来证明这把公钥就是服务器的，而不是别人冒充的。解决这个问题的方式就是使用数字证书，来校验证书是否是目标服务器的。</p>
 </li>
 </ul>
-<p>1、我们需要找到一个第三方机构，它是一个拥有公信力、大家都认可的认证中心，那就是数字证书认证机构(简称CA)。<br>2、服务器在给客户端传输公钥的过程中，会把公钥以及服务器的个人信息通过Hash算法生成信息摘要。为了防止信息摘要被人调换，客户端还会用CA提供的私钥对信息摘要进行加密来形成数字签名。并且，最后还会把原来没Hash算法之前的个人信息以及公钥和数字签名合并在一起，形成数字证书。<br>3、当客户端拿到这份数字证书之后，就会用CA提供的公钥来对数字证书里面的数字签名进行解密来得到信息摘要，然后对数字证书里服务器的公钥以及个人信息进行Hash得到另外一份信息摘要。最后把两份信息摘要进行对比，如果一样，则证明这个人是服务器，否则就不是。这样，就可以保证服务器的公钥安全着交给客户端了。<br><img src="https://res.hualala.com/basicdoc/b16b2bb0-67d4-43f2-87fc-120e90ad276b.png" alt="https加密的流程"></p>
+<p><img src="https://i.postimg.cc/k4DqnDbc/https.png" alt="https加密的流程"></p>
+<ol>
+<li>数字证书是<code>Https</code>实现安全传输的基础，它是由权威的<code>CA</code>机构颁发的，证书的主要内容有：公钥（<code>Public Key</code>）、<code>ISSUER</code>（证书的发布机构）、<code>Subject</code>（证书持有者）、证书有效期、签名算法、指纹及指纹算法</li>
+<li><code>CA</code>机构除了给别人颁发证书以外，它也有自己的证书，这个证书是机构自己颁发给自己的，为了区分我们称它为根证书，根证书也有自己的公钥和私钥，在本文中我们称之为根公钥和根私钥，根公钥和加密算法是对外公布的，而根私钥是<code>CA</code>机构自己绝对保密的。这个根证书在验证证书的过程中起着核心的作用. 客户端会提前把根证书（根公钥）植入系统中， 以便对服务端的证书（公钥）进行验证。</li>
+<li>指纹可以理解为证书身份的唯一代表，是用来保证证书的完整性的，确保证书没有被修改过。证书在发布之前，<code>CA</code>机构对证书的内容用指纹算法（一般是<code>sha1或sha256</code>）计算得到一个<code>hash</code>值，这个hash值就是指纹。为什么用<code>hash</code>值作为证书的身份代表呢？首先，<code>hash</code>值具有不可逆性，也就是说无法通过<code>hash</code>值得出原来的信息内容；其次，<code>hash</code>值具有唯一性，即<code>hash</code>计算可以保证不同的内容一定得到不同的<code>hash</code>值.签名是在信息后面加上的一段数字串，可以证明该信息有没有被修改过。数字证书在发布的时候，CA机构将证书的指纹和指纹算法通过自己的私钥加密得到的就是证书的签名了。先简单阐述一下证书的指纹和签名的作用，我们在验证证书的时候，首先通过机构的根公钥去解密证书的签名，解密成功的话会得到证书的指纹和指纹算法，指纹是一个<code>hash</code>值，它代表着证书的原始内容，此时再通过指纹算法计算证书内容得到另外一个<code>hash</code>值，如果这两个hash值相同，则代表证书没有被篡改过，否则就是被篡改了</li>
+<li>另外， 如果公钥被第三方劫持了，然后把自己的公钥证书发给客户端，<br>1) 对证书的内容进行篡改。 客户端用解密后的加密算法对内容重新生成<strong>hash</strong>值时，和证书中携带的指纹肯定是不一样的<br>2) 第三方把自己的证书给客户端， 该证书也是权威机构的。 客户端在验证服务端证书的有效性时， 不光验证书内容是否被篡改，还会验证证书中的<strong>url</strong>是否和客户端请求的<strong>url</strong>相同（<code>url</code>也具有唯一性）<br>3) 第三方把自己伪造的证书传送给客户端。 客户端用根公钥进行解密时，不可能成功。<br><img src="https://res.hualala.com/basicdoc/b16b2bb0-67d4-43f2-87fc-120e90ad276b.png" alt="https加密的流程"></li>
+</ol>
 <h4 id="HTTPS的优点"><a href="#HTTPS的优点" class="headerlink" title="HTTPS的优点"></a>HTTPS的优点</h4><p>尽管<code>HTTPS</code>并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但<code>HTTPS</code>仍是现行架构下最安全的解决方案，主要有以下几个好处：</p>
 <ul>
 <li>使用<code>HTTPS</code>协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；</li>
@@ -422,6 +430,9 @@
 </li>
 <li><p><strong>HTTPS</strong>协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用。最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行。</p>
 </li>
+</ul>
+<h4 id="参考的文档"><a href="#参考的文档" class="headerlink" title="参考的文档"></a>参考的文档</h4><ul>
+<li><a href="https://blog.csdn.net/liuxingrong666/article/details/83869161" target="_blank" rel="noopener">证书验证的详细过程</a></li>
 </ul>
 
       
