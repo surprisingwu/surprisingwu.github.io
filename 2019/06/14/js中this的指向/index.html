@@ -15,7 +15,7 @@
 <meta property="og:description" content="this的指向按照调用的方式分类作为普通的函数调用 分为严格模式和非严格模式, 严格模式下为undefined, 非严格模式下指向全局对象  12345678910111213const a &#x3D; 18function test() &amp;#123;    console.log(this.a)&amp;#125;test() &#x2F;&#x2F; 18function _test() &amp;#123;    &quot;use stric">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-06-14T06:17:51.000Z">
-<meta property="article:modified_time" content="2020-07-05T15:26:16.642Z">
+<meta property="article:modified_time" content="2020-07-25T15:00:39.424Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="深入js">
 <meta name="twitter:card" content="summary">
@@ -120,6 +120,11 @@
 </ul>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">    age: <span class="number">10</span>, </span><br><span class="line">    sex: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`My age is <span class="subst">$&#123;<span class="keyword">this</span>.age&#125;</span>, my name is <span class="subst">$&#123;name&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1.call(o, <span class="string">'wyt'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(f1.bind(o), <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> test = &#123;</span><br><span class="line">    age: <span class="number">10</span>,</span><br><span class="line">    _test() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.age)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>箭头函数: 无法被<code>new</code>,也无法方位<code>arguments</code>. 箭头函数里面的<code>this</code>, 会绑定到箭头函数声明时的上下文的<code>this</code>, 且无法通过其它方式进行更改</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> test = &#123;</span><br><span class="line">    name: <span class="string">'wyt'</span>,</span><br><span class="line">    sayName() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`My name is <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span>`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fn = test.sayName()</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -214,7 +219,7 @@
           </li>
         
           <li>
-            <a href="/2019/07/05/js%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">js中this的指向</a>
+            <a href="/2019/07/05/js%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">js Event Loop</a>
           </li>
         
       </ul>

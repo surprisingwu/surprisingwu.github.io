@@ -5,15 +5,17 @@
   
 
   
-  <title>js中this的指向 | Hexo</title>
+  <title>js Event Loop | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="js中this的指向">
+  <meta name="description" content="简单了解Js Event Loopjs为什么是单线程的? JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？  为了利用多核CPU的计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js Event Loop">
 <meta property="og:url" content="http://yoursite.com/2019/07/05/js%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简单了解Js Event Loopjs为什么是单线程的? JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？  为了利用多核CPU的计">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-07-05T02:05:12.000Z">
-<meta property="article:modified_time" content="2020-06-15T15:05:54.709Z">
+<meta property="article:modified_time" content="2020-07-26T14:26:19.976Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="深入js">
 <meta name="twitter:card" content="summary">
@@ -79,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      js中this的指向
+      js Event Loop
     </h1>
   
 
@@ -87,7 +89,66 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="简单了解Js-Event-Loop"><a href="#简单了解Js-Event-Loop" class="headerlink" title="简单了解Js Event Loop"></a>简单了解Js Event Loop</h2><h4 id="js为什么是单线程的"><a href="#js为什么是单线程的" class="headerlink" title="js为什么是单线程的?"></a>js为什么是单线程的?</h4><ul>
+<li><p><code>JavaScript</code>的单线程，与它的用途有关。作为浏览器脚本语言，<code>JavaScript</code>的主要用途是与用户互动，以及操作<code>DOM</code>。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定<code>JavaScript</code>同时有两个线程，一个线程在某个<code>DOM</code>节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？</p>
+</li>
+<li><p>为了利用多核<code>CPU</code>的计算能力，<code>HTML5</code>提出<code>Web Worker</code>标准，允许<code>JavaScript</code>脚本创建多个线程，但是子线程完<br>全受主线程控制，且不得操作<code>DOM</code>。所以，这个新标准并没有改变<code>JavaScript</code>单线程的本质。</p>
+</li>
+<li><p>截然<code>JavaScript</code>是单线程的, 就意味着<code>UI</code>渲染和<code>js</code>解析执行在一个线程里面执行.也就是说,同一个时刻,最多只有一个代码段在执行.因此<code>JavaScript</code>引入了异步回调,不阻塞代码的执行. 并且通过事件循环机制收集和执行异步的代码.</p>
+</li>
+</ul>
+<h4 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h4><ul>
+<li><p>主线程: 也就是<code>js</code>引擎执行的线程.页面渲染和函数处理都在这个主线程上执行</p>
+</li>
+<li><p>任务队列<code>macrotask queue</code>: 一些异步回调触发时, 会<code>push</code>到这个任务队列中, 遵循先进先出.主线程的执行栈空的时候, 通过事件循环会检测任务队列是否有待执行的任务,如果有的话取出前面的一个放到主线程中执行.</p>
+</li>
+<li><p>微任务队列<code>microtask queue</code>: 可能有多个, 并且会一次执行完. 代码执行时,遇到微任务会<code>push</code>到该队列中. 每当执行完一个<code>macrotask</code>时, 会检测是否有带执行的微任务. 并且会执行完所有的微任务,才执行下一个<code>macrotask</code></p>
+<ul>
+<li><strong>一次事件循环只执行处于<code>macrotask</code> 队首的任务 ，执行完成后，立即执行 <code>microtask</code> 队列中的所有任务。</strong></li>
+</ul>
+</li>
+<li><p>一个 <code>web worker</code> 或者一个跨域的 <code>iframe</code> 都有自己的栈、堆和消息队列。两个不同的运行时只能通过 <code>postMessage</code> 方法进行通信。如果另一个运行时侦听<code>message</code> 事件，则此方法会向该运行时添加消息。</p>
+</li>
+</ul>
+<p><a href="https://pic4.zhimg.com/80/v2-7164ef638fc5b849ba2c843bdb332210_1440w.jpg" target="_blank" rel="noopener">事件循环实例图</a></p>
+<ul>
+<li><p>常见的宏任务有</p>
+<ul>
+<li><code>setTimeout</code></li>
+<li><code>setInterval</code></li>
+<li><code>setImmediate</code></li>
+<li><code>I/O</code>操作, 用户交互操作和<code>UI</code>渲染等</li>
+</ul>
+</li>
+<li><p>常见的微任务有</p>
+<ul>
+<li><code>Promise</code></li>
+<li><code>process.nextTick()</code></li>
+<li><code>MutationObserve</code></li>
+</ul>
+</li>
+<li><p>一个比较特殊的任务<code>window.requestAnimationFrame(callback)</code>, 返回一个<code>id</code>,可以调用<code>window.requestAnimationFrame(id)</code>来取消监听.</p>
+<ul>
+<li>这里注意: 大多数屏幕渲染的时间间隔是每秒<code>60</code>帧</li>
+<li><code>callback</code>: 下一次重绘之前更新动画帧所调用的函数(即上面所说的回调函数)。该回调函数会被传入<code>DOMHighResTimeStamp</code>参数，该参数与<code>performance.now()</code>的返回值相同，它表示<code>requestAnimationFrame()</code> 开始去执行回调函数的时刻。<ul>
+<li>若你想在浏览器下次重绘之前继续更新下一帧动画，那么回调函数自身必须再次调用<code>window.requestAnimationFrame()</code></li>
+</ul>
+</li>
+<li><code>requestAnimationFrame</code> 比起 <code>setTimeout、setInterval</code>的优势主要有两点：<br>  1、<code>requestAnimationFrame</code> 会把每一帧中的所有<code>DOM</code>操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。<br>  2、在隐藏或不可见的元素中，<code>requestAnimationFrame</code>将不会进行重绘或回流，这当然就意味着更少的的<code>cpu，gpu</code>和内存使用量。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">      <span class="keyword">const</span> e = <span class="built_in">document</span>.getElementById(<span class="string">"e"</span>);</span><br><span class="line">      <span class="keyword">let</span> flag = <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(flag == <span class="literal">true</span>)&#123;</span><br><span class="line">              <span class="keyword">if</span>(left&gt;=<span class="number">100</span>)&#123;</span><br><span class="line">                  flag = <span class="literal">false</span></span><br><span class="line">              &#125;</span><br><span class="line">              e.style.left = <span class="string">` <span class="subst">$&#123;left++&#125;</span>px`</span></span><br><span class="line">          &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">              <span class="keyword">if</span>(left&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">                  flag = <span class="literal">true</span></span><br><span class="line">              &#125;</span><br><span class="line">              e.style.left = <span class="string">` <span class="subst">$&#123;left--&#125;</span>px`</span></span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//requestAnimationFrame效果</span></span><br><span class="line">      (<span class="function"><span class="keyword">function</span> <span class="title">animloop</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          render();</span><br><span class="line">          <span class="built_in">window</span>.requestAnimationFrame(animloop);</span><br><span class="line">      &#125;)();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>关于事件循环常问的题<ul>
+<li>考察对宏任务和微任务的执行顺序.宏任务是一次事件循环只能执行一个, 而微任务队列是在执行后宏任务之后, 会清空微任务队列,也就是当前事件循环就执行完所有的微任务.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">const</span> intervalId = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">11</span>)</span><br><span class="line">    resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">12</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">13</span>)</span><br><span class="line">    clearInterval(intervalId)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">Promise</span>.resolve()</span><br><span class="line"> .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="number">7</span>)</span><br><span class="line"> &#125;)</span><br><span class="line"> .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="built_in">console</span>.log(<span class="number">8</span>)</span><br><span class="line"> &#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line"><span class="comment">// 1, 9, 7, 8, 2, 3,10, 11, 12, 13</span></span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer class="article-footer">
@@ -112,9 +173,9 @@
     </a>
   
   
-    <a href="/2019/06/30/js%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%97%AD%E5%8C%85/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/15/http%E6%B5%85%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">js作用域和闭包</div>
+      <div class="article-nav-title">http浅析</div>
     </a>
   
 </nav>
@@ -181,7 +242,7 @@
           </li>
         
           <li>
-            <a href="/2019/07/05/js%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">js中this的指向</a>
+            <a href="/2019/07/05/js%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">js Event Loop</a>
           </li>
         
       </ul>
