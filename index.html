@@ -198,7 +198,9 @@
 </li>
 <li><p><code>Reflow</code>——回流.意味着元件的几何尺寸变了，我们需要重新验证并计算<code>Render Tree</code>。是<code>Render Tree</code>的一部分或全部发生了变化。这就是<code>Reflow</code>，或是<code>Layout</code>。（<code>HTML</code>使用的是<code>flow based layout</code>，也就是流式布局，所以，如果某元件的几何尺寸发生了变化，需要重新布局，也就叫<code>reflow</code>）<code>reflow</code> 会从<code>&lt;html&gt;</code>这个<code>root frame</code>开始递归往下，依次计算所有的结点几何尺寸和位置，在<code>reflow</code>过程中，可能会增加一些<code>frame</code>，比如一个文本字符串必需被包装起来。</p>
 </li>
-<li><p><code>Reflow</code>的成本比<code>Repaint</code>的成本高得多的多。<code>DOM Tree</code>里的每个节点都会有<code>reflow</code>方法，一个节点的<code>reflow</code>很有可能导致子结点，甚至父点以及同级结点的<code>reflow</code>。在一些高性能的电脑上也许还没什么，但是如果<code>reflow</code>发生在手机上，那么这个过程是非常痛苦和耗电的。<br>所以，下面这些动作有很大可能会是成本比较高的。</p>
+<li><p><code>css</code>的加载不会阻塞<code>Dom</code>的解析, 但是会阻塞,<code>Dom</code>的渲染. <code>DOM</code>解析完毕, 会等待<code>css</code>加载完成. 但是不会一直傻等着.如果在一定的时间内,没有等到<code>css</code>加载完成, 会先进行<code>Dom</code>的渲染. <code>css</code>加载完成之后, 再进行一次渲染.</p>
+</li>
+<li><p><code>Reflow</code>的成本比<code>Repaint</code>的成本高得多的多。<code>DOM Tree</code>里的每个节点都会有<code>reflow</code>方法，一个节点的<code>reflow</code>很有可能导致子节点，甚至父节点以及同级节点的<code>reflow</code>。在一些高性能的电脑上也许还没什么，但是如果<code>reflow</code>发生在手机上，那么这个过程是非常痛苦和耗电的。<br>所以，下面这些动作有很大可能会是成本比较高的。</p>
 <ul>
 <li>当你增加、删除、修改<code>DOM</code>结点时，会导致<code>Reflow</code>或<code>Repaint</code></li>
 <li>当你移动<code>DOM</code>的位置，或是搞个动画的时候。</li>
@@ -259,12 +261,13 @@ This algorithm may be inefficient since it requires the user agent to have acces
 Automatic layout, CSS 2.1 Specification</code><br>几个工具和几篇文章<br>有时候，你会也许会发现在<code>IE</code>下，你不知道你修改了什么东西，结果CPU一下子就上去了到100%，然后过了好几秒钟<code>repaint/reflow</code>才完成，这种事情以IE的年代时经常发生。所以，我们需要一些工具帮我们看看我们的代码里有没有什么不合适的东西。</p>
 <ul>
 <li><code>Chrome</code>下，<code>Google</code>的<code>SpeedTracer</code>是个非常强悍的工作让你看看你的浏览渲染的成本有多大。其实<code>Safari和Chrome</code>都可以使用开发者工具里的一个<code>Timeline</code>的东东。</li>
-<li><code>Firefox</code>下这个基于<code>Firebug</code>的叫<code>Firebug Paint Events</code>的插件也不错。<br><code>* IE下你可以用一个叫</code>dynaTrace<code>的</code>IE`扩展。<br>最后，别忘了下面这几篇提高浏览器性能的文章：<ul>
+<li><code>Firefox</code>下这个基于<code>Firebug</code>的叫<code>Firebug Paint Events</code>的插件也不错。<br><code>* IE下你可以用一个叫</code>dynaTrace<code>的</code>IE`扩展。</li>
+</ul>
+<p>最后，别忘了下面这几篇提高浏览器性能的文章：</p>
+<ul>
 <li><a href="http://code.google.com/speed/page-speed/docs/rules_intro.html" target="_blank" rel="noopener">Google – Web Performance Best Practices</a></li>
 <li><a href="https://developer.yahoo.com/performance/rules.html" target="_blank" rel="noopener">Yahoo – Best Practices for Speeding Up Your Web Site</a></li>
 <li><a href="http://www.stevesouders.com/examples/rules.php" target="_blank" rel="noopener">Steve Souders – 14 Rules for Faster-Loading Web Sites</a></li>
-</ul>
-</li>
 </ul>
 
       
